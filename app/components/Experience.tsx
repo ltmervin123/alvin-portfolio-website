@@ -56,7 +56,7 @@ export default function Experience() {
                   </h3>
                   <div className="flex items-center gap-3 mt-1 ">
                     <Image
-                      src="/hr_hatch_logo.jfif"
+                      src="/hr-hatch-logo.jpeg"
                       alt="HR-Hatch Tech Logo"
                       width={32}
                       height={32}
