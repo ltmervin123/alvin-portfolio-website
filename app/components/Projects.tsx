@@ -109,10 +109,7 @@ function ImageGallery({
               </svg>
             </button>
             <button
-              onClick={(e) => {
-                e.stopPropagation();
-                nextImage();
-              }}
+              onClick={nextImage}
               className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/70 z-10"
               aria-label="Next image"
             >
@@ -246,7 +243,10 @@ function ImageGallery({
 
             {/* Bottom Controls - Indicators and Mobile Navigation */}
             {images.length > 1 && (
-              <div className="absolute bottom-4 sm:bottom-6 left-0 right-0 z-20 flex flex-col items-center gap-4">
+              <div
+                className="absolute bottom-4 sm:bottom-6 left-0 right-0 z-20 flex flex-col items-center gap-4"
+                onClick={(e) => e.stopPropagation()}
+              >
                 {/* Mobile Navigation Buttons */}
                 <div className="flex sm:hidden gap-4">
                   <button
