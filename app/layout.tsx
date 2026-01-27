@@ -28,9 +28,18 @@ export const metadata: Metadata = {
     "TypeScript",
     "Next.js",
     "Software Engineer",
+    "Web Developer",
+    "JavaScript Developer",
+    "Portfolio",
   ],
-  authors: [{ name: "Alvincent Sangco" }],
+  authors: [{ name: "Alvincent Sangco", url: "https://alvincentsangco.dev" }],
   creator: "Alvincent Sangco",
+  publisher: "Alvincent Sangco",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -41,10 +50,11 @@ export const metadata: Metadata = {
     siteName: "Alvincent Sangco Portfolio",
     images: [
       {
-        url: "/og-image.jpg", // You'll need to create this
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Alvincent Sangco - Full Stack Developer",
+        type: "image/jpeg",
       },
     ],
   },
@@ -53,21 +63,28 @@ export const metadata: Metadata = {
     title: "Alvincent Sangco | Full Stack Developer",
     description:
       "Backend-focused full stack developer specializing in MERN applications, AI integration, and scalable systems.",
-    images: ["/og-image.jpg"], // Same as Open Graph
+    creator: "@alvincentsangco",
+    images: ["/og-image.jpg"],
   },
   robots: {
     index: true,
     follow: true,
+    nocache: false,
     googleBot: {
       index: true,
       follow: true,
+      noimageindex: false,
       "max-video-preview": -1,
       "max-image-preview": "large",
       "max-snippet": -1,
     },
   },
   verification: {
-    google: "your-google-site-verification-code", // Add this from Google Search Console
+    google: "google98264a67849ca1cc",
+  },
+  category: "technology",
+  alternates: {
+    canonical: "https://alvincentsangco.dev",
   },
 };
 
@@ -81,7 +98,12 @@ export default function RootLayout({
     "@type": "Person",
     name: "Alvincent Sangco",
     url: "https://alvincentsangco.dev",
+    image: "https://alvincentsangco.dev/og-image.jpg",
     jobTitle: "Full Stack Developer",
+    worksFor: {
+      "@type": "Organization",
+      name: "Self-Employed",
+    },
     description:
       "Backend-focused full stack developer specializing in MERN applications, AI integration, and scalable systems.",
     sameAs: [
@@ -96,7 +118,14 @@ export default function RootLayout({
       "Next.js",
       "AI Integration",
       "Full Stack Development",
+      "MERN Stack",
+      "JavaScript",
+      "Express.js",
     ],
+    alumniOf: {
+      "@type": "EducationalOrganization",
+      name: "Your University Name",
+    },
   };
 
   return (
