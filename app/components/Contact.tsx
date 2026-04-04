@@ -4,8 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState } from "react";
 
-const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
-
 export default function Contact() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
@@ -17,7 +15,7 @@ export default function Contact() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(
-    null
+    null,
   );
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -52,6 +50,7 @@ export default function Contact() {
       } else {
         setSubmitStatus("error");
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       setSubmitStatus("error");
     } finally {
@@ -60,7 +59,7 @@ export default function Contact() {
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setFormData({
       ...formData,

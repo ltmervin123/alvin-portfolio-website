@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { Inter } from "next/font/google";
+// @ts-expect-error -- Next.js handles global CSS side-effect imports.
 import "./globals.css";
 
 const inter = Inter({

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 export default function Hero() {
   const handleClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
-    href: string
+    href: string,
   ) => {
     e.preventDefault();
     const targetId = href.replace("#", "");
