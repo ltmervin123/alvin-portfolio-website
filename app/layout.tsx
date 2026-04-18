@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
-import { Inter } from "next/font/google";
+import { Inter, Lora } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
   variable: "--font-inter",
+  subsets: ["latin"],
+});
+
+const lora = Lora({
+  variable: "--font-lora",
   subsets: ["latin"],
 });
 
@@ -15,7 +20,7 @@ export const metadata: Metadata = {
     template: "%s | Alvincent Sangco",
   },
   description:
-    "Backend-focused full stack developer specializing in MERN applications, AI integration, and scalable systems. Building production-ready architectures with Node.js, React, MongoDB, and AI services.",
+    "Full-Stack Developer with 2 years of experience specializing in Web Development, AI-driven automation, RAG pipelines, media processing workflows, and scalable RESTful APIs. Proven track record of transforming complex requirements into production-ready systems, with a focus on optimizing latency and enhancing evaluation accuracy through LLM integration.",
   keywords: [
     "Alvincent Sangco",
     "Full Stack Developer",
@@ -46,7 +51,7 @@ export const metadata: Metadata = {
     url: "https://alvincentsangco.dev",
     title: "Alvincent Sangco | Full Stack Developer",
     description:
-      "Backend-focused full stack developer specializing in MERN applications, AI integration, and scalable systems.",
+      "Full-Stack Developer with 2 years of experience specializing in Web Development, AI-driven automation, RAG pipelines, media processing workflows, and scalable RESTful APIs. Proven track record of transforming complex requirements into production-ready systems, with a focus on optimizing latency and enhancing evaluation accuracy through LLM integration. ",
     siteName: "Alvincent Sangco Portfolio",
     images: [
       {
@@ -62,7 +67,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Alvincent Sangco | Full Stack Developer",
     description:
-      "Backend-focused full stack developer specializing in MERN applications, AI integration, and scalable systems.",
+      "Full-Stack Developer with 2 years of experience specializing in Web Development, AI-driven automation, RAG pipelines, media processing workflows, and scalable RESTful APIs. Proven track record of transforming complex requirements into production-ready systems, with a focus on optimizing latency and enhancing evaluation accuracy through LLM integration. ",
     creator: "@alvincentsangco",
     images: ["/og-image.jpg"],
   },
@@ -105,7 +110,7 @@ export default function RootLayout({
       name: "Self-Employed",
     },
     description:
-      "Backend-focused full stack developer specializing in MERN applications, AI integration, and scalable systems.",
+      "Full-Stack Developer with 2 years of experience specializing in Web Development, AI-driven automation, RAG pipelines, media processing workflows, and scalable RESTful APIs. Proven track record of transforming complex requirements into production-ready systems, with a focus on optimizing latency and enhancing evaluation accuracy through LLM integration. ",
     sameAs: [
       "https://www.linkedin.com/in/alvincentsangco",
       "https://github.com/alvincentsangco",
@@ -121,6 +126,9 @@ export default function RootLayout({
       "MERN Stack",
       "JavaScript",
       "Express.js",
+      "RESTful APIs",
+      "RAG Pipelines",
+      "Media Processing Workflows",
     ],
     alumniOf: {
       "@type": "EducationalOrganization",
@@ -136,7 +144,9 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${inter.variable} antialiased`}>
+      <body
+        className={`${inter.variable} ${lora.variable} font-sans antialiased bg-theme-bg text-theme-text`}
+      >
         {children} <Analytics />
       </body>
     </html>

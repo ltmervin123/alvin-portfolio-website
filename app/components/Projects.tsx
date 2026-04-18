@@ -6,13 +6,18 @@ import Image from "next/image";
 import { useRef, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 
+const shimmerBase64 =
+  "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNkMWQ1ZGIiLz48YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSJvcGFjaXR5IiB2YWx1ZXM9IjAuNTsxOzAuNSIgZHVyPSIxLjVzIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIvPjwvc3ZnPg==";
+
 // Image Gallery Component
 function ImageGallery({
   images,
   projectTitle,
+  priority = false,
 }: {
   images: string[];
   projectTitle: string;
+  priority?: boolean;
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -83,7 +88,9 @@ function ImageGallery({
             isTransitioning ? "opacity-0 scale-95" : "opacity-100 scale-100"
           }`}
           sizes="(max-width: 768px) 100vw, 33vw"
-          loading="lazy"
+          priority={priority}
+          placeholder="blur"
+          blurDataURL={shimmerBase64}
           onClick={() => setIsModalOpen(true)}
         />
         {/* Navigation Arrows */}
@@ -132,7 +139,7 @@ function ImageGallery({
 
         {/* Image Indicators */}
         {images.length > 1 && (
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 ">
             {images.map((_, idx) => (
               <button
                 key={idx}
@@ -140,10 +147,10 @@ function ImageGallery({
                   e.stopPropagation();
                   setCurrentIndex(idx);
                 }}
-                className={`w-2 h-2 rounded-full transition-all ${
+                className={`w-2 h-2 rounded-full transition-all  ${
                   idx === currentIndex
-                    ? "bg-white w-6"
-                    : "bg-white/50 hover:bg-white/75"
+                    ? "bg-theme-accent w-6"
+                    : "bg-theme-accent/50 hover:bg-theme-bg/75"
                 }`}
                 aria-label={`Go to image ${idx + 1}`}
               />
@@ -162,20 +169,32 @@ function ImageGallery({
         typeof window !== "undefined" &&
         createPortal(
           <div
-            className="fixed inset-0 z-[9999] bg-black flex items-center justify-center"
+            className="fixed inset-0 z-[9999] bg-theme-bg/80 backdrop-blur-md flex items-center justify-center"
             onClick={() => setIsModalOpen(false)}
           >
             {/* Close Button */}
             <button
-              className="absolute top-2 right-2 sm:top-4 sm:right-4 z-20 text-white text-3xl sm:text-4xl hover:text-gray-300 p-2 bg-black/50 rounded-full backdrop-blur-sm"
+              className="absolute top-4 right-4 sm:top-6 sm:right-6 z-30 p-2 rounded-full bg-black/50 text-white hover:bg-black/80 transition-colors backdrop-blur-sm shadow-lg hover:scale-105 active:scale-95 flex items-center justify-center cursor-pointer"
               onClick={() => setIsModalOpen(false)}
               aria-label="Close modal"
             >
-              ×
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2.5}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
             </button>
 
             {/* Image Counter */}
-            <div className="absolute top-2 left-2 sm:top-4 sm:left-4 z-20 bg-black/70 text-white px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium backdrop-blur-sm">
+            <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-30 bg-black/50 text-white px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm shadow-lg tracking-wide">
               {currentIndex + 1} / {images.length}
             </div>
 
@@ -190,10 +209,12 @@ function ImageGallery({
                 src={images[currentIndex]}
                 alt={`${projectTitle} screenshot ${currentIndex + 1}`}
                 fill
-                className="object-contain p-4 sm:p-8 md:p-12"
+                className="object-contain p-4 sm:p-8 md:p-12 transition-opacity duration-500 z-10"
                 sizes="100vw"
                 priority
                 quality={95}
+                placeholder="blur"
+                blurDataURL={shimmerBase64}
               />
 
               {/* Navigation Arrows - Hidden on mobile, visible on tablet+ */}
@@ -201,11 +222,11 @@ function ImageGallery({
                 <>
                   <button
                     onClick={prevImage}
-                    className="hidden sm:flex absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 backdrop-blur-sm text-white p-2 sm:p-3 rounded-full hover:bg-white/30 hover:scale-110 active:scale-95"
+                    className="hidden sm:flex absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30 bg-black/50 text-white p-4 rounded-full hover:bg-black/80 hover:scale-110 active:scale-95 transition-all backdrop-blur-sm shadow-xl focus:outline-none focus:ring-2 focus:ring-theme-accent"
                     aria-label="Previous image"
                   >
                     <svg
-                      className="w-5 h-5 sm:w-6 sm:h-6"
+                      className="w-8 h-8"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -213,18 +234,18 @@ function ImageGallery({
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        strokeWidth={2}
+                        strokeWidth={2.5}
                         d="M15 19l-7-7 7-7"
                       />
                     </svg>
                   </button>
                   <button
                     onClick={nextImage}
-                    className="hidden sm:flex absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 backdrop-blur-sm text-white p-2 sm:p-3 rounded-full hover:bg-white/30 hover:scale-110 active:scale-95"
+                    className="hidden sm:flex absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 bg-black/50 text-white p-4 rounded-full hover:bg-black/80 hover:scale-110 active:scale-95 transition-all backdrop-blur-sm shadow-xl focus:outline-none focus:ring-2 focus:ring-theme-accent"
                     aria-label="Next image"
                   >
                     <svg
-                      className="w-5 h-5 sm:w-6 sm:h-6"
+                      className="w-8 h-8"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -232,7 +253,7 @@ function ImageGallery({
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        strokeWidth={2}
+                        strokeWidth={2.5}
                         d="M9 5l7 7-7 7"
                       />
                     </svg>
@@ -251,11 +272,11 @@ function ImageGallery({
                 <div className="flex sm:hidden gap-4">
                   <button
                     onClick={prevImage}
-                    className="bg-white/20 backdrop-blur-sm text-white p-3 rounded-full hover:bg-white/30 active:scale-95"
+                    className="bg-black/50 text-white p-4 rounded-full hover:bg-black/80 active:scale-95 transition-all backdrop-blur-sm shadow-lg focus:outline-none focus:ring-2 focus:ring-theme-accent"
                     aria-label="Previous image"
                   >
                     <svg
-                      className="w-6 h-6"
+                      className="w-8 h-8"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -263,18 +284,18 @@ function ImageGallery({
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        strokeWidth={2}
+                        strokeWidth={2.5}
                         d="M15 19l-7-7 7-7"
                       />
                     </svg>
                   </button>
                   <button
                     onClick={nextImage}
-                    className="bg-white/20 backdrop-blur-sm text-white p-3 rounded-full hover:bg-white/30 active:scale-95"
+                    className="bg-black/50 text-white p-4 rounded-full hover:bg-black/80 active:scale-95 transition-all backdrop-blur-sm shadow-lg focus:outline-none focus:ring-2 focus:ring-theme-accent"
                     aria-label="Next image"
                   >
                     <svg
-                      className="w-6 h-6"
+                      className="w-8 h-8"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -282,7 +303,7 @@ function ImageGallery({
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        strokeWidth={2}
+                        strokeWidth={2.5}
                         d="M9 5l7 7-7 7"
                       />
                     </svg>
@@ -298,8 +319,8 @@ function ImageGallery({
                         onClick={() => setCurrentIndex(idx)}
                         className={`rounded-full shrink-0 ${
                           idx === currentIndex
-                            ? "bg-white w-6 sm:w-8 h-2.5 sm:h-3"
-                            : "bg-white/50 hover:bg-white/75 w-2.5 sm:w-3 h-2.5 sm:h-3"
+                            ? "bg-theme-bg w-6 sm:w-8 h-2.5 sm:h-3"
+                            : "bg-theme-bg/50 hover:bg-theme-bg/75 w-2.5 sm:w-3 h-2.5 sm:h-3"
                         }`}
                         aria-label={`Go to image ${idx + 1}`}
                       />
@@ -309,7 +330,7 @@ function ImageGallery({
               </div>
             )}
           </div>,
-          document.body
+          document.body,
         )}
     </>
   );
@@ -398,13 +419,17 @@ export default function Projects() {
   ];
 
   return (
-    <section id="projects" ref={ref} className="py-20 px-6 bg-gray-50">
+    <section
+      id="projects"
+      ref={ref}
+      className="py-20 px-6 bg-theme-bg border-t border-theme-border"
+    >
       <div className="max-w-7xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-4xl md:text-5xl font-bold text-gray-900 mb-16 text-center"
+          className="text-4xl md:text-5xl font-bold text-theme-text font-serif mb-16 text-center"
         >
           Featured Projects
         </motion.h2>
@@ -417,35 +442,35 @@ export default function Projects() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: index * 0.2 }}
               whileHover={{ y: -5 }}
-              className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 hover:shadow-2xl transition-all"
+              className="bg-[#FAF8F5] rounded-xl shadow-sm overflow-hidden border border-theme-border hover:shadow-md shadow-theme-border transition-all"
             >
               <div className="grid md:grid-cols-3 gap-8 p-8">
                 {/* Left: Project Info */}
                 <div className="md:col-span-2 space-y-4">
                   <div>
-                    <h3 className="text-3xl font-bold text-gray-900 mb-2">
+                    <h3 className="text-3xl font-bold text-theme-text font-serif mb-2">
                       {project.title}
                     </h3>
-                    <p className="text-lg text-emerald-600 font-semibold">
+                    <p className="text-lg text-theme-accent font-semibold">
                       {project.subtitle}
                     </p>
                   </div>
 
-                  <p className="text-gray-700 leading-relaxed">
+                  <p className="text-theme-muted font-serif leading-relaxed">
                     {project.description}
                   </p>
 
                   <div>
-                    <h4 className="text-sm font-semibold text-gray-900 mb-2">
+                    <h4 className="text-sm font-semibold text-theme-text font-serif mb-2">
                       Key Contributions:
                     </h4>
                     <ul className="space-y-2">
                       {project.contributions.map((contribution, idx) => (
                         <li
                           key={idx}
-                          className="flex items-start text-gray-700 text-sm"
+                          className="flex items-start text-theme-muted font-serif text-sm"
                         >
-                          <span className="text-emerald-500 mr-2 mt-0.5">
+                          <span className="text-theme-accent mr-2 mt-0.5">
                             ▸
                           </span>
                           {contribution}
@@ -454,7 +479,7 @@ export default function Projects() {
                     </ul>
                   </div>
 
-                  <p className="text-sm text-gray-600 font-mono pt-2">
+                  <p className="text-sm text-theme-muted font-serif font-mono pt-2">
                     {project.tech}
                   </p>
 
@@ -463,7 +488,7 @@ export default function Projects() {
                       href={project.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-6 py-2 bg-emerald-600 text-white rounded-lg text-sm font-medium hover:bg-emerald-700 transition-colors"
+                      className="px-6 py-2 bg-theme-accent text-white rounded-lg text-sm font-medium hover:bg-[#C25835] transition-colors"
                     >
                       View Project
                     </a>
@@ -475,6 +500,7 @@ export default function Projects() {
                   <ImageGallery
                     images={project.images}
                     projectTitle={project.title}
+                    priority={index === 0}
                   />
                 </div>
               </div>

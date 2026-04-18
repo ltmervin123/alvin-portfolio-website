@@ -26,7 +26,7 @@ const Footer = dynamic(() => import("./components/Footer"), {
 export const metadata: Metadata = {
   title: "Alvincent Sangco | Full Stack Developer Portfolio",
   description:
-    "Explore the portfolio of Alvincent Sangco, a backend-focused full stack developer specializing in MERN stack, AI integration, and scalable systems. View projects, skills, and experience.",
+    "Full-Stack Developer with 2 years of experience specializing in Web Development, AI-driven automation, RAG pipelines, media processing workflows, and scalable RESTful APIs. Proven track record of transforming complex requirements into production-ready systems, with a focus on optimizing latency and enhancing evaluation accuracy through LLM integration.",
   alternates: {
     canonical: "https://alvincentsangco.dev",
   },

@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Alvincent Sangco - Full Stack Developer Portfolio",
     short_name: "A. Sangco Portfolio",
     description:
-      "Backend-focused full stack developer specializing in MERN applications, AI integration, and scalable systems.",
+      "Full-Stack Developer with 2 years of experience specializing in Web Development, AI-driven automation, RAG pipelines, media processing workflows, and scalable RESTful APIs. Proven track record of transforming complex requirements into production-ready systems, with a focus on optimizing latency and enhancing evaluation accuracy through LLM integration. ",
     start_url: "/",
     display: "standalone",
     background_color: "#ffffff",

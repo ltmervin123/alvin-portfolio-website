@@ -52,7 +52,7 @@ export default function Header() {
 
   const handleClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
-    href: string
+    href: string,
   ) => {
     e.preventDefault();
     const targetId = href.replace("#", "");
@@ -75,8 +75,10 @@ export default function Header() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-white/95 backdrop-blur-sm shadow-md" : "bg-transparent"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-transparent ${
+        scrolled
+          ? "bg-[#FAF8F5]/95 backdrop-blur-md shadow-sm border-theme-border"
+          : "bg-transparent"
       }`}
     >
       <nav className="max-w-7xl mx-auto px-6 py-4">
@@ -88,17 +90,17 @@ export default function Header() {
                 <a
                   href={link.href}
                   onClick={(e) => handleClick(e, link.href)}
-                  className={`text-sm font-medium transition-colors relative ${
+                  className={`text-sm font-medium transition-colors relative flex py-1 ${
                     activeSection === link.href.replace("#", "")
-                      ? "text-emerald-600"
-                      : "text-gray-700 hover:text-emerald-600"
+                      ? "text-theme-text"
+                      : "text-theme-muted hover:text-theme-text"
                   }`}
                 >
                   {link.name}
                   {activeSection === link.href.replace("#", "") && (
                     <motion.span
                       layoutId="activeSection"
-                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-emerald-600"
+                      className="absolute -bottom-[6px] left-0 right-0 h-0.5 bg-theme-accent"
                       transition={{
                         type: "spring",
                         stiffness: 380,
@@ -115,14 +117,14 @@ export default function Header() {
           <a
             href="#contact"
             onClick={(e) => handleClick(e, "#contact")}
-            className="hidden md:block px-6 py-2 bg-emerald-600 text-white rounded-lg text-sm font-medium hover:bg-emerald-700 transition-all hover:scale-105"
+            className="hidden md:block px-6 py-2 bg-theme-text text-theme-bg rounded border border-theme-text text-sm font-medium hover:bg-transparent hover:text-theme-text transition-colors"
           >
             Get in Touch
           </a>
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 text-gray-700 hover:text-emerald-600"
+            className="md:hidden p-2 text-theme-muted hover:text-theme-text"
             onClick={() => {
               const mobileMenu = document.getElementById("mobile-menu");
               mobileMenu?.classList.toggle("hidden");
@@ -159,8 +161,8 @@ export default function Header() {
                   }}
                   className={`block text-sm font-medium transition-colors ${
                     activeSection === link.href.replace("#", "")
-                      ? "text-emerald-600"
-                      : "text-gray-700 hover:text-emerald-600"
+                      ? "text-theme-accent"
+                      : "text-theme-muted hover:text-theme-text"
                   }`}
                 >
                   {link.name}
