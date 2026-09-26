@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-25T00:40:00Z",
+  "title": "Design System: Alvincent Sangco Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Terracotta Accent",
+        "canonical": "#B8471D",
+        "tonalRamp": ["#3D1506", "#61220B", "#8C3413", "#B8471D", "#CF673E", "#E29070", "#F0BEAA", "#F9E5DD"]
+      },
+      "neutral-bg": {
+        "role": "neutral",
+        "displayName": "Warm Paper Ground",
+        "canonical": "#F3F0E6",
+        "tonalRamp": ["#2E2A20", "#4F493B", "#746C5A", "#9C927E", "#BDB6A5", "#DBD6CA", "#EDE9E0", "#F3F0E6"]
+      },
+      "surface-card": {
+        "role": "neutral",
+        "displayName": "Warm Cream Surface",
+        "canonical": "#FAF8F5",
+        "tonalRamp": ["#333029", "#575248", "#7D776B", "#A49D90", "#C7C2B7", "#E4E1DB", "#F2EFEB", "#FAF8F5"]
+      },
+      "neutral-fg": {
+        "role": "neutral",
+        "displayName": "Deep Charcoal Ink",
+        "canonical": "#1D1C1A",
+        "tonalRamp": ["#0D0D0C", "#1D1C1A", "#383633", "#595652", "#7E7B75", "#A8A49E", "#D5D2CB", "#F2EFEB"]
+      },
+      "neutral-muted": {
+        "role": "neutral",
+        "displayName": "Warm Slate Taupe",
+        "canonical": "#5C5A55",
+        "tonalRamp": ["#1A1918", "#2E2D2A", "#44433F", "#5C5A55", "#787670", "#98968F", "#BCBAB3", "#E3E2DC"]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Parchment Border",
+        "canonical": "#E2DCD0",
+        "tonalRamp": ["#292621", "#4A453D", "#6E675D", "#948B7F", "#B7AEA2", "#D4CDBF", "#E2DCD0", "#F4F1EB"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display (Lora)", "purpose": "Hero headline and primary identity statements." },
+      "headline": { "displayName": "Headline (Lora)", "purpose": "Major section title headers." },
+      "body": { "displayName": "Body (Inter)", "purpose": "Narrative copy and descriptive engineering facts." }
+    },
+    "shadows": [
+      { "name": "subtle-surface", "value": "0 1px 2px 0 rgba(0, 0, 0, 0.05)", "purpose": "Light elevation on hover states." }
+    ],
+    "motion": [
+      { "name": "ease-out-editorial", "value": "cubic-bezier(0.21, 0.47, 0.32, 0.98)", "purpose": "Smooth authored entrance motion." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Tactile high-contrast primary call-to-action.",
+      "html": "<button class=\"ds-btn-primary\">View Selected Projects</button>",
+      "css": ".ds-btn-primary { background: #1D1C1A; color: #F3F0E6; padding: 14px 28px; border-radius: 6px; font-weight: 500; font-size: 15px; border: none; cursor: pointer; transition: background 0.2s ease, transform 0.15s ease; } .ds-btn-primary:hover { background: #33312E; transform: translateY(-1px); } .ds-btn-primary:active { transform: scale(0.98); }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Transparent border button for download and secondary actions.",
+      "html": "<button class=\"ds-btn-secondary\">Download Resume</button>",
+      "css": ".ds-btn-secondary { background: transparent; color: #1D1C1A; border: 1px solid #E2DCD0; padding: 14px 28px; border-radius: 6px; font-weight: 500; font-size: 15px; cursor: pointer; transition: border-color 0.2s ease, background 0.2s ease; } .ds-btn-secondary:hover { border-color: #5C5A55; background: rgba(234, 228, 215, 0.5); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Editorial Engineer's Dossier",
+    "overview": "An authoritative, typography-first editorial sanctuary inspired by literary journals and high-craft technical publications. The visual world blends the warmth and timeless dignity of textured cream paper with the exacting precision of production engineering.",
+    "keyCharacteristics": [
+      "Warm, tactile paper ground with verified WCAG AAA/AA text contrast.",
+      "Commanding serif display typography (Lora) paired with crystalline modern sans-serif body text (Inter).",
+      "Burnt sienna terracotta accent used with deliberate restraint to punctuate key interactive states and titles.",
+      "Generous whitespace, quiet structural rules, and tactile micro-physics rather than theatrical animations."
+    ],
+    "rules": [
+      { "name": "The Rarity Rule", "body": "The terracotta accent is applied to less than 10% of any viewport. Its scarcity preserves its authority.", "section": "colors" },
+      { "name": "The No-Kicker Rule", "body": "Section titles and major headings speak for themselves; eyebrow tags and decorative kickers above headings are strictly avoided.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule", "body": "Content surfaces rest flat at zero elevation. Shadows appear only in response to user state.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do maintain a strict 65–75ch line measure for body paragraphs.",
+      "Do preserve the warm paper background (#F3F0E6) and deep charcoal foreground (#1D1C1A).",
+      "Do ensure all interactive controls have accessible :focus-visible rings in terracotta accent (#B8471D).",
+      "Do let headings carry their own weight without decorative prefix badges."
+    ],
+    "donts": [
+      "Don't use text gradients under any circumstances.",
+      "Don't use generic boxed metric counters ('X+ Years', 'Y+ Projects').",
+      "Don't place eyebrow labels or kickers above headings.",
+      "Don't use cold grays; all secondary text must carry the warm slate-taupe hue (#5C5A55)."
+    ]
+  }
+}
