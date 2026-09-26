@@ -9,7 +9,6 @@ import { createPortal } from "react-dom";
 const shimmerBase64 =
   "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNkMWQ1ZGIiLz48YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSJvcGFjaXR5IiB2YWx1ZXM9IjAuNTsxOzAuNSIgZHVyPSIxLjVzIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIvPjwvc3ZnPg==";
 
-// Image Gallery Component
 function ImageGallery({
   images,
   projectTitle,
@@ -30,7 +29,7 @@ function ImageGallery({
       setTimeout(() => {
         setCurrentIndex((prev) => (prev + 1) % images.length);
         setIsTransitioning(false);
-      }, 300);
+      }, 250);
     }
   };
 
@@ -40,11 +39,10 @@ function ImageGallery({
       setTimeout(() => {
         setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
         setIsTransitioning(false);
-      }, 300);
+      }, 250);
     }
   };
 
-  // Auto-slide functionality
   useEffect(() => {
     if (images.length <= 1 || isHovered || isModalOpen) return;
 
@@ -53,13 +51,13 @@ function ImageGallery({
       setTimeout(() => {
         setCurrentIndex((prev) => (prev + 1) % images.length);
         setIsTransitioning(false);
-      }, 300);
-    }, 4000);
+      }, 250);
+    }, 4500);
 
     return () => clearInterval(interval);
   }, [images.length, isHovered, isModalOpen]);
 
-  // Prevent body scroll when modal is open
+
   useEffect(() => {
     if (isModalOpen) {
       document.body.style.overflow = "hidden";
@@ -76,259 +74,148 @@ function ImageGallery({
   return (
     <>
       <div
-        className="relative w-full h-64 rounded-lg overflow-hidden shadow-md group"
+        className="relative w-full h-72 md:h-80 bg-[var(--paper-deep)] border border-[var(--line)] overflow-hidden group select-none cursor-pointer"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        onClick={() => setIsModalOpen(true)}
       >
         <Image
           src={images[currentIndex]}
           alt={`${projectTitle} screenshot ${currentIndex + 1}`}
           fill
-          className={`object-cover cursor-pointer transition-all duration-500 hover:scale-105 ${
-            isTransitioning ? "opacity-0 scale-95" : "opacity-100 scale-100"
-          }`}
-          sizes="(max-width: 768px) 100vw, 33vw"
+          className={`object-cover transition-all duration-500 group-hover:scale-105 ${isTransitioning ? "opacity-0 scale-95" : "opacity-100 scale-100"
+            }`}
+          sizes="(max-width: 768px) 100vw, 40vw"
           priority={priority}
           placeholder="blur"
           blurDataURL={shimmerBase64}
-          onClick={() => setIsModalOpen(true)}
         />
-        {/* Navigation Arrows */}
+
+
+        <div className="absolute top-3 right-3 bg-[var(--ink)] text-[var(--rice)] px-2.5 py-1 font-mono text-xs font-semibold uppercase tracking-wider border border-white/20 z-10 shadow-xs">
+          {currentIndex + 1} / {images.length}
+        </div>
+
+        <div className="absolute top-3 left-3 bg-[var(--paper)] text-[var(--ink)] px-2.5 py-1 font-mono text-xs font-semibold uppercase tracking-wider border border-[var(--line)] z-10 flex items-center gap-1.5 shadow-xs">
+          <span className="font-serif text-[var(--sun)] font-bold">見本</span>
+          <span>EXPAND VIEW</span>
+        </div>
+
+
         {images.length > 1 && (
           <>
             <button
-              onClick={prevImage}
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/70"
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                prevImage();
+              }}
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-[var(--ink)]/80 text-[var(--rice)] w-9 h-9 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[var(--sun)] z-20"
               aria-label="Previous image"
             >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
+              ←
             </button>
             <button
-              onClick={nextImage}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/70 z-10"
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                nextImage();
+              }}
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-[var(--ink)]/80 text-[var(--rice)] w-9 h-9 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[var(--sun)] z-20"
               aria-label="Next image"
             >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
+              →
             </button>
           </>
         )}
 
-        {/* Image Indicators */}
+
         {images.length > 1 && (
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 ">
-            {images.map((_, idx) => (
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-20 bg-black/40 px-3 py-1 rounded-full backdrop-blur-xs">
+            {images.slice(0, 10).map((_, idx) => (
               <button
                 key={idx}
+                type="button"
                 onClick={(e) => {
                   e.stopPropagation();
                   setCurrentIndex(idx);
                 }}
-                className={`w-2 h-2 rounded-full transition-all  ${
-                  idx === currentIndex
-                    ? "bg-theme-accent w-6"
-                    : "bg-theme-accent/50 hover:bg-theme-bg/75"
-                }`}
+                className={`transition-all duration-300 rounded-full ${idx === currentIndex
+                  ? "bg-[var(--gold-bright)] w-5 h-1.5"
+                  : "bg-white/50 hover:bg-white/80 w-1.5 h-1.5"
+                  }`}
                 aria-label={`Go to image ${idx + 1}`}
               />
             ))}
+            {images.length > 10 && (
+              <span className="text-[0.6rem] text-white/70 font-mono ml-1">
+                +{images.length - 10}
+              </span>
+            )}
           </div>
         )}
-
-        {/* Image Counter */}
-        <div className="absolute top-3 right-3 bg-black/50 text-white px-2 py-1 rounded text-xs">
-          {currentIndex + 1} / {images.length}
-        </div>
       </div>
 
-      {/* Fullscreen Modal */}
       {isModalOpen &&
         typeof window !== "undefined" &&
         createPortal(
           <div
-            className="fixed inset-0 z-[9999] bg-theme-bg/80 backdrop-blur-md flex items-center justify-center"
+            className="fixed inset-0 z-[9999] bg-[var(--night)]/95 backdrop-blur-md flex items-center justify-center p-4"
             onClick={() => setIsModalOpen(false)}
           >
-            {/* Close Button */}
+
             <button
-              className="absolute top-4 right-4 sm:top-6 sm:right-6 z-30 p-2 rounded-full bg-black/50 text-white hover:bg-black/80 transition-colors backdrop-blur-sm shadow-lg hover:scale-105 active:scale-95 flex items-center justify-center cursor-pointer"
+              type="button"
+              className="absolute top-4 right-4 sm:top-6 sm:right-6 z-40 px-4 py-2 bg-white/10 hover:bg-[var(--sun)] text-[var(--rice)] border border-white/20 font-mono text-xs uppercase tracking-wider transition-colors flex items-center gap-2 cursor-pointer"
               onClick={() => setIsModalOpen(false)}
               aria-label="Close modal"
             >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2.5}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
+              <span>CLOSE</span>
+              <span>✕</span>
             </button>
 
-            {/* Image Counter */}
-            <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-30 bg-black/50 text-white px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm shadow-lg tracking-wide">
-              {currentIndex + 1} / {images.length}
+
+            <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-40 bg-white/10 text-[var(--rice)] px-4 py-2 border border-white/20 font-mono text-xs uppercase tracking-wider">
+              {projectTitle} // {currentIndex + 1} OF {images.length}
             </div>
 
-            {/* Main Image Container - Full viewport */}
             <div
-              className="relative w-screen h-screen flex items-center justify-center"
+              className="relative w-full h-[80vh] max-w-6xl flex items-center justify-center"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Image with proper aspect ratio handling */}
               <Image
-                key={`${projectTitle} screenshot ${currentIndex + 1}`}
+                key={`${projectTitle}-large-${currentIndex}`}
                 src={images[currentIndex]}
                 alt={`${projectTitle} screenshot ${currentIndex + 1}`}
                 fill
-                className="object-contain p-4 sm:p-8 md:p-12 transition-opacity duration-500 z-10"
+                className="object-contain p-2 sm:p-6 transition-opacity duration-300"
                 sizes="100vw"
                 priority
                 quality={95}
-                placeholder="blur"
-                blurDataURL={shimmerBase64}
               />
 
-              {/* Navigation Arrows - Hidden on mobile, visible on tablet+ */}
+
               {images.length > 1 && (
                 <>
                   <button
+                    type="button"
                     onClick={prevImage}
-                    className="hidden sm:flex absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30 bg-black/50 text-white p-4 rounded-full hover:bg-black/80 hover:scale-110 active:scale-95 transition-all backdrop-blur-sm shadow-xl focus:outline-none focus:ring-2 focus:ring-theme-accent"
+                    className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-40 bg-white/10 hover:bg-[var(--sun)] text-[var(--rice)] border border-white/20 w-12 h-12 rounded-full flex items-center justify-center font-mono text-xl transition-all"
                     aria-label="Previous image"
                   >
-                    <svg
-                      className="w-8 h-8"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2.5}
-                        d="M15 19l-7-7 7-7"
-                      />
-                    </svg>
+                    ←
                   </button>
                   <button
+                    type="button"
                     onClick={nextImage}
-                    className="hidden sm:flex absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 bg-black/50 text-white p-4 rounded-full hover:bg-black/80 hover:scale-110 active:scale-95 transition-all backdrop-blur-sm shadow-xl focus:outline-none focus:ring-2 focus:ring-theme-accent"
+                    className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-40 bg-white/10 hover:bg-[var(--sun)] text-[var(--rice)] border border-white/20 w-12 h-12 rounded-full flex items-center justify-center font-mono text-xl transition-all"
                     aria-label="Next image"
                   >
-                    <svg
-                      className="w-8 h-8"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2.5}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
+                    →
                   </button>
                 </>
               )}
             </div>
-
-            {/* Bottom Controls - Indicators and Mobile Navigation */}
-            {images.length > 1 && (
-              <div
-                className="absolute bottom-4 sm:bottom-6 left-0 right-0 z-20 flex flex-col items-center gap-4"
-                onClick={(e) => e.stopPropagation()}
-              >
-                {/* Mobile Navigation Buttons */}
-                <div className="flex sm:hidden gap-4">
-                  <button
-                    onClick={prevImage}
-                    className="bg-black/50 text-white p-4 rounded-full hover:bg-black/80 active:scale-95 transition-all backdrop-blur-sm shadow-lg focus:outline-none focus:ring-2 focus:ring-theme-accent"
-                    aria-label="Previous image"
-                  >
-                    <svg
-                      className="w-8 h-8"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2.5}
-                        d="M15 19l-7-7 7-7"
-                      />
-                    </svg>
-                  </button>
-                  <button
-                    onClick={nextImage}
-                    className="bg-black/50 text-white p-4 rounded-full hover:bg-black/80 active:scale-95 transition-all backdrop-blur-sm shadow-lg focus:outline-none focus:ring-2 focus:ring-theme-accent"
-                    aria-label="Next image"
-                  >
-                    <svg
-                      className="w-8 h-8"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2.5}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </button>
-                </div>
-
-                {/* Image Indicators - Scrollable on mobile */}
-                <div className="max-w-full overflow-x-auto px-4 scrollbar-hide">
-                  <div className="flex gap-2 justify-center min-w-min">
-                    {images.map((_, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => setCurrentIndex(idx)}
-                        className={`rounded-full shrink-0 ${
-                          idx === currentIndex
-                            ? "bg-theme-bg w-6 sm:w-8 h-2.5 sm:h-3"
-                            : "bg-theme-bg/50 hover:bg-theme-bg/75 w-2.5 sm:w-3 h-2.5 sm:h-3"
-                        }`}
-                        aria-label={`Go to image ${idx + 1}`}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
           </div>,
           document.body,
         )}
@@ -342,18 +229,26 @@ export default function Projects() {
 
   const projects = [
     {
+      code: "SYS-01",
+      kanji: "機電一号",
       title: "Snappcheck",
       subtitle: "AI-Powered Reference Check Automation System",
       description:
-        "Automates reference checking workflows using AI-driven analysis and background processing.",
+        "High-throughput enterprise platform automating reference verification through AI analysis and async Redis queues. Deployed in live production environments processing 100+ candidate evaluations on a weekly cadence.",
       contributions: [
-        "Designed backend architecture and data models",
-        "Built APIs for candidates, reference requests, and evaluations",
-        "Integrated AI and Google APIs",
-        "Optimized background jobs with Redis",
+        "Designed complete backend architecture, domain schemas, and RESTful API endpoints.",
+        "Integrated Claude & Gemini LLM pipelines for automated multi-factor evaluation reports.",
+        "Implemented Redis job queues to process heavy background workflows without client blocking.",
+        "Optimized database query performance with custom Mongoose aggregation pipelines.",
       ],
-      tech: "Node.js · Express · MongoDB · Redis · Anthropic API · Google Services",
-
+      tech: [
+        "Node.js",
+        "Express",
+        "MongoDB",
+        "Redis",
+        "Anthropic API",
+        "Google Services",
+      ],
       link: "https://snappcheck.com",
       images: [
         "/projects/snappcheck-images/home.png",
@@ -374,17 +269,26 @@ export default function Projects() {
       ],
     },
     {
+      code: "SYS-02",
+      kanji: "機電二号",
       title: "Prepwise",
-      subtitle: "AI-Powered Mock Interview Simulator (Capstone)",
+      subtitle: "AI-Powered Mock Interview Simulator",
       description:
-        "Simulates real interview sessions with video recording, transcription, and AI feedback.",
+        "Comprehensive browser-based simulation suite enabling candidate practice with real-time video capture, speech transcription, and instant multi-criteria AI rubric feedback.",
       contributions: [
-        "Built full-stack architecture",
-        "Implemented browser-based video recording",
-        "Created media processing pipelines",
-        "Integrated AI feedback generation",
+        "Architected end-to-end full-stack web application with React and Node.js.",
+        "Engineered browser-based video/audio recording pipeline with stream chunking.",
+        "Integrated Google Cloud Speech-to-Text with automated prompt evaluation chains.",
+        "Created administrative dashboards for student interview progress and analytics.",
       ],
-      tech: "React · Node.js · MongoDB · Redis · Anthropic API · Google Speech-to-Text",
+      tech: [
+        "React",
+        "Node.js",
+        "MongoDB",
+        "Redis",
+        "Anthropic API",
+        "Google Speech-to-Text",
+      ],
       link: "https://capstone-mock-ai-simulator-client.vercel.app",
       images: [
         "/projects/prepwise-images/home.png",
@@ -401,15 +305,18 @@ export default function Projects() {
       ],
     },
     {
+      code: "SYS-03",
+      kanji: "機電三号",
       title: "TORS",
-      subtitle: "Criminology Reviewer System",
-      description: "Digital reviewer platform with secure media handling.",
+      subtitle: "Criminology Reviewer & Examination Platform",
+      description:
+        "Dedicated digital reviewer platform for criminology reviewees, supporting high-concurrency practice examinations, detailed answer explanations, and secure media assets.",
       contributions: [
-        "Designed backend schemas and APIs",
-        "Implemented Cloudinary media storage",
-        "Deployed production-ready backend",
+        "Architected scalable MongoDB database schemas for multi-tiered question banks.",
+        "Implemented secure authenticated media uploading workflows via Cloudinary.",
+        "Deployed production-ready backend infrastructure optimized for high test-day concurrency.",
       ],
-      tech: "Node.js · Express · MongoDB · Cloudinary",
+      tech: ["Node.js", "Express", "MongoDB", "Cloudinary"],
       link: "https://www.urtors.com",
       images: [
         "/projects/tors-images/home.png",
@@ -420,89 +327,131 @@ export default function Projects() {
 
   return (
     <section
-      id="projects"
       ref={ref}
-      className="py-20 px-6 bg-theme-bg border-t border-theme-border"
+      className="py-24 px-4 sm:px-6 md:px-8 border-b border-[var(--line)] bg-[var(--paper-soft)]/40"
     >
       <div className="max-w-7xl mx-auto">
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-4xl md:text-5xl font-bold text-theme-text font-serif mb-16 text-center"
-        >
-          Featured Projects
-        </motion.h2>
 
-        <div className="space-y-12">
-          {projects.map((project, index) => (
+        <div className="mb-16 border-b border-[var(--line)] pb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <div className="font-mono text-xs uppercase tracking-widest text-[var(--sun)] mb-1 font-semibold">
+              [ PROJECTS 04 // FEATURED SYSTEMS ]
+            </div>
+            <h2 className="font-display font-light text-4xl sm:text-5xl md:text-6xl uppercase tracking-tight text-[var(--ink)]">
+              FEATURED PROJECTS
+            </h2>
+          </div>
+        </div>
+
+
+        <div className="space-y-16">
+          {projects.map((project, pIdx) => (
             <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 40 }}
+              key={project.code}
+              initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
-              whileHover={{ y: -5 }}
-              className="bg-[#FAF8F5] rounded-xl shadow-sm overflow-hidden border border-theme-border hover:shadow-md shadow-theme-border transition-all"
+              transition={{
+                duration: 0.6,
+                delay: pIdx * 0.15,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              className="bg-[var(--paper)] border border-[var(--line)] p-6 sm:p-8 lg:p-10 shadow-sm relative group hover:border-[var(--sun)]/50 transition-colors"
             >
-              <div className="grid md:grid-cols-3 gap-8 p-8">
-                {/* Left: Project Info */}
-                <div className="md:col-span-2 space-y-4">
+
+              <div className="flex justify-between items-center pb-4 mb-6 border-b border-[var(--line)] font-mono text-xs uppercase tracking-wider">
+                <div className="flex items-center gap-3">
+                  <span className="font-bold text-[var(--sun)] text-sm">{project.code}</span>
+                  <span className="text-[var(--ash)]">//</span>
+                  <span className="font-serif text-[var(--ink)] font-bold text-sm">
+                    {project.kanji}
+                  </span>
+                  <span className="text-[var(--ash)]">//</span>
+                  <span className="text-[var(--ink)] font-mono text-xs font-semibold">
+                    {project.title}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 bg-[var(--paper-soft)] px-3 py-1 border border-[var(--line)]">
+                  <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
+                  <span className="text-[var(--ink)] font-mono text-xs font-semibold tracking-wider">
+                    LIVE PRODUCTION
+                  </span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                <div className="lg:col-span-7 space-y-5">
                   <div>
-                    <h3 className="text-3xl font-bold text-theme-text font-serif mb-2">
+                    <h3 className="font-display text-3xl sm:text-4xl text-[var(--ink)] font-semibold tracking-wide">
                       {project.title}
                     </h3>
-                    <p className="text-lg text-theme-accent font-semibold">
+                    <p className="font-serif text-base sm:text-lg text-[var(--sun-deep)] mt-1 font-semibold">
                       {project.subtitle}
                     </p>
                   </div>
 
-                  <p className="text-theme-muted font-serif leading-relaxed">
+                  <p className="font-serif text-sm sm:text-base text-[var(--ink-soft)] leading-relaxed">
                     {project.description}
                   </p>
 
-                  <div>
-                    <h4 className="text-sm font-semibold text-theme-text font-serif mb-2">
-                      Key Contributions:
-                    </h4>
-                    <ul className="space-y-2">
-                      {project.contributions.map((contribution, idx) => (
-                        <li
-                          key={idx}
-                          className="flex items-start text-theme-muted font-serif text-sm"
-                        >
-                          <span className="text-theme-accent mr-2 mt-0.5">
-                            ▸
+
+                  <div className="pt-2">
+                    <span className="font-mono text-xs uppercase tracking-wider text-[var(--ink)] font-bold block mb-2">
+                      KEY CONTRIBUTIONS &amp; ARCHITECTURE:
+                    </span>
+                    <ul className="space-y-2 font-serif text-xs sm:text-sm text-[var(--ink-soft)]">
+                      {project.contributions.map((contribution, cIdx) => (
+                        <li key={cIdx} className="flex items-start gap-2.5">
+                          <span className="font-mono text-[var(--sun)] text-sm mt-0.5 font-bold">
+                            ▹
                           </span>
-                          {contribution}
+                          <span className="text-[var(--ink-soft)]">{contribution}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
 
-                  <p className="text-sm text-theme-muted font-serif font-mono pt-2">
-                    {project.tech}
-                  </p>
 
-                  <div className="flex flex-wrap gap-3 pt-4">
+                  <div className="pt-2">
+                    <span className="font-mono text-[0.7rem] uppercase tracking-wider text-[var(--ash)] font-bold block mb-2">
+                      STACK &amp; INFRASTRUCTURE:
+                    </span>
+                    <div className="flex flex-wrap gap-2">
+                      {project.tech.map((t, tIdx) => (
+                        <span
+                          key={tIdx}
+                          className="px-2.5 py-1 bg-[var(--paper-soft)] border border-[var(--line)] font-mono text-xs font-medium text-[var(--ink)] uppercase tracking-wide hover:border-[var(--sun)] transition-colors"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+
+                  <div className="pt-4">
                     <a
                       href={project.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-6 py-2 bg-theme-accent text-white rounded-lg text-sm font-medium hover:bg-[#C25835] transition-colors"
+                      className="ticket-pill"
                     >
-                      View Project
+                      <span>VIEW LIVE PROJECT</span>
+                      <span className="ticket-pill-icon" aria-hidden="true">
+                        ↗
+                      </span>
                     </a>
                   </div>
                 </div>
 
-                {/* Right: Project Image Gallery */}
-                <div className="flex items-center justify-center">
+
+                <div className="lg:col-span-5">
                   <ImageGallery
                     images={project.images}
                     projectTitle={project.title}
-                    priority={index === 0}
+                    priority={pIdx === 0}
                   />
                 </div>
+
               </div>
             </motion.div>
           ))}

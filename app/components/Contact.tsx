@@ -3,6 +3,47 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState } from "react";
+import { Mail, Linkedin, Github, LucideIcon } from "lucide-react";
+
+interface ContactItem {
+  id: string;
+  label: string;
+  value: string;
+  href: string;
+  icon: LucideIcon;
+  colorClass: string;
+  external?: boolean;
+}
+
+const CONTACT_ITEMS: ContactItem[] = [
+  {
+    id: "email",
+    label: "ELECTRONIC MAIL",
+    value: "alvincentsangco@gmail.com",
+    href: "mailto:alvincentsangco@gmail.com",
+    icon: Mail,
+    colorClass: "text-[var(--sun)] border-[var(--sun)]/30 bg-[var(--sun)]/10",
+    external: false,
+  },
+  {
+    id: "linkedin",
+    label: "PROFESSIONAL NETWORK",
+    value: "LINKEDIN // ALVINCENT",
+    href: "https://www.linkedin.com/in/alvincent-sangco-8a4085290/",
+    icon: Linkedin,
+    colorClass: "text-[var(--sun)] border-[var(--sun)]/30 bg-[var(--sun)]/10",
+    external: true,
+  },
+  {
+    id: "github",
+    label: "SOURCE CODE REPOSITORY",
+    value: "GITHUB // LTMERVIN123",
+    href: "https://github.com/ltmervin123",
+    icon: Github,
+    colorClass: "text-[var(--sun)] border-[var(--sun)]/30 bg-[var(--sun)]/10",
+    external: true,
+  },
+];
 
 export default function Contact() {
   const ref = useRef(null);
@@ -46,12 +87,11 @@ export default function Contact() {
         setTimeout(() => {
           setIsModalOpen(false);
           setSubmitStatus(null);
-        }, 2000);
+        }, 2200);
       } else {
         setSubmitStatus("error");
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
+    } catch {
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
@@ -67,222 +107,208 @@ export default function Contact() {
     });
   };
 
+
+
   return (
-    <section ref={ref} className="py-20 px-6 bg-[#FAF8F5]">
-      <div className="max-w-4xl mx-auto text-center">
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-4xl md:text-5xl font-bold text-theme-text font-serif mb-8"
-        >
-          Let&apos;s Work Together
-        </motion.h2>
+    <section
+      ref={ref}
+      className="py-24 px-4 sm:px-6 md:px-8 border-b border-[var(--line)] bg-[var(--paper)]"
+    >
+      <div className="max-w-7xl mx-auto">
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-xl text-theme-muted font-serif mb-12 max-w-2xl mx-auto"
-        >
-          I&apos;m open to full stack or backend-focused roles where I can build
-          scalable systems and AI-powered products.
-        </motion.p>
-
+        <div className="mb-16 border-b border-[var(--line)] pb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <div className="font-mono text-xs uppercase tracking-widest text-[var(--sun)] mb-1">
+              [ TRANSMISSION 05 // INITIATE CONTACT ]
+            </div>
+            <h2 className="font-display font-light text-4xl sm:text-5xl md:text-6xl uppercase tracking-tight text-[var(--ink)]">
+              INITIATE COLLABORATION
+            </h2>
+          </div>
+        </div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="space-y-6"
+          transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="bg-[var(--paper-deep)] border border-[var(--line)] p-8 flex flex-col md:flex-row items-center justify-between gap-6"
         >
-          {/* Email Button */}
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="inline-block px-8 py-4 bg-theme-accent text-white rounded-lg text-lg font-medium hover:bg-[#C25835] transition-all hover:scale-105 hover:shadow-sm hover:cursor-pointer"
-          >
-            leave a message
-          </button>
-
-          {/* Contact Links */}
-          <div className="flex flex-wrap justify-center gap-6 pt-6">
-            <motion.a
-              initial={{ opacity: 0, y: 10 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              href="mailto:alvincentsangco@gmail.com"
-              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="#EA4335"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                />
-              </svg>
-              <span className="text-theme-muted font-serif">alvincentsangco@gmail.com</span>
-            </motion.a>
-
-            <motion.a
-              initial={{ opacity: 0, y: 10 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              href="https://www.linkedin.com/in/alvincent-sangco-8a4085290/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-            >
-              <svg className="w-6 h-6" fill="#0A66C2" viewBox="0 0 24 24">
-                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-              </svg>
-              <span className="text-theme-muted font-serif">LinkedIn</span>
-            </motion.a>
-
-            <motion.a
-              initial={{ opacity: 0, y: 10 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              href="https://github.com/ltmervin123"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-            >
-              <svg className="w-6 h-6" fill="#181717" viewBox="0 0 24 24">
-                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-              </svg>
-              <span className="text-theme-muted font-serif">GitHub</span>
-            </motion.a>
+          <div className="flex items-center gap-6">
+            <div className="hanko-seal text-base px-3 py-2 bg-[var(--paper)]">
+              <span>通</span>
+              <span>信</span>
+            </div>
+            <div>
+              <span className="font-mono text-xs uppercase tracking-widest text-[var(--sun-deep)] block">
+                DIRECT INQUIRY
+              </span>
+              <h3 className="font-display text-2xl text-[var(--ink)] uppercase tracking-wide mt-1">
+                SEND A DIRECT DISPATCH
+              </h3>
+            </div>
           </div>
+
+          <button
+            type="button"
+            onClick={() => setIsModalOpen(true)}
+            className="ticket-pill cursor-pointer"
+          >
+            <span>LEAVE A MESSAGE</span>
+            <span className="ticket-pill-icon" aria-hidden="true">
+              →
+            </span>
+          </button>
         </motion.div>
+
+
+        <div className="mt-12 pt-8  grid grid-cols-1 sm:grid-cols-3 gap-6 font-mono text-xs text-[var(--ink)]">
+          {CONTACT_ITEMS.map((item) => {
+            const Icon = item.icon;
+            return (
+              <a
+                key={item.id}
+                href={item.href}
+                target={item.external ? "_blank" : undefined}
+                rel={item.external ? "noopener noreferrer" : undefined}
+                className="group flex items-center gap-3.5 p-3.5 bg-[var(--paper-soft)] border border-[var(--line)] hover:border-[var(--sun)] transition-all duration-200"
+              >
+                <div
+                  className={`p-2 border rounded-xs flex items-center justify-center transition-colors group-hover:bg-[var(--sun)] group-hover:text-[var(--rice)] group-hover:border-[var(--sun)] ${item.colorClass}`}
+                >
+                  <Icon className="w-4 h-4 shrink-0" />
+                </div>
+                <div className="flex flex-col min-w-0">
+                  <span className="text-[0.62rem] text-[var(--ash)] tracking-wider">
+                    {item.label}
+                  </span>
+                  <span className="font-semibold text-xs text-[var(--ink)] truncate group-hover:text-[var(--sun)] transition-colors">
+                    {item.value}
+                  </span>
+                </div>
+              </a>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Modal */}
+
       <AnimatePresence>
         {isModalOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/30 backdrop-blur-md flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-[var(--night)]/70 backdrop-blur-xs flex items-center justify-center z-50 p-4"
             onClick={() => setIsModalOpen(false)}
           >
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
+              initial={{ scale: 0.94, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: "spring", duration: 0.5 }}
-              className="bg-theme-bg rounded-lg shadow-md shadow-theme-border max-w-md w-full p-6"
+              exit={{ scale: 0.94, opacity: 0 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="bg-[var(--paper)] border border-[var(--line)] shadow-2xl max-w-lg w-full p-6 sm:p-8 relative"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Modal Header */}
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-bold text-theme-text font-serif">
-                  Send Me a Message
-                </h3>
+
+              <div className="flex justify-between items-center pb-4 mb-6 border-b border-[var(--line)]">
+                <div>
+                  <h3 className="font-display text-2xl text-[var(--ink)] uppercase">
+                    SEND A MESSAGE
+                  </h3>
+                </div>
                 <button
+                  type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="text-[#A09D94] hover:text-theme-muted font-serif transition-colors"
+                  className="w-8 h-8 rounded-full border border-[var(--line)] flex items-center justify-center font-mono text-sm text-[var(--ink)] hover:bg-[var(--sun)] hover:text-[var(--rice)] transition-colors cursor-pointer"
+                  aria-label="Close modal"
                 >
-                  <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
+                  ✕
                 </button>
               </div>
 
-              {/* Form */}
-              <form onSubmit={handleSubmit} className="space-y-4">
+
+              <form onSubmit={handleSubmit} className="space-y-4 font-mono text-xs">
                 <div>
                   <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-theme-muted font-serif mb-1"
+                    htmlFor="contact-name"
+                    className="block uppercase tracking-wider text-[var(--ink)] mb-1 font-semibold"
                   >
-                    Your Name
+                    YOUR NAME / IDENTIFIER
                   </label>
                   <input
                     type="text"
-                    id="name"
+                    id="contact-name"
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-2 border border-theme-border rounded-lg focus:ring-2 focus:ring-theme-accent focus:border-transparent outline-none transition-all"
-                    placeholder="John Doe"
+                    className="w-full px-3.5 py-2.5 bg-[var(--paper-soft)] border border-[var(--line)] text-[var(--ink)] font-serif text-sm focus:border-[var(--sun)] focus:outline-none transition-colors"
+                    placeholder="Jane Doe / Acme Corp"
                   />
                 </div>
 
                 <div>
                   <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-theme-muted font-serif mb-1"
+                    htmlFor="contact-email"
+                    className="block uppercase tracking-wider text-[var(--ink)] mb-1 font-semibold"
                   >
-                    Your Email
+                    ELECTRONIC MAIL ADDRESS
                   </label>
                   <input
                     type="email"
-                    id="email"
+                    id="contact-email"
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-2 border border-theme-border rounded-lg focus:ring-2 focus:ring-theme-accent focus:border-transparent outline-none transition-all"
-                    placeholder="john@example.com"
+                    className="w-full px-3.5 py-2.5 bg-[var(--paper-soft)] border border-[var(--line)] text-[var(--ink)] font-serif text-sm focus:border-[var(--sun)] focus:outline-none transition-colors"
+                    placeholder="jane@company.com"
                   />
                 </div>
 
                 <div>
                   <label
-                    htmlFor="message"
-                    className="block text-sm font-medium text-theme-muted font-serif mb-1"
+                    htmlFor="contact-message"
+                    className="block uppercase tracking-wider text-[var(--ink)] mb-1 font-semibold"
                   >
-                    Message
+                    MESSAGE / PROJECT BRIEF
                   </label>
                   <textarea
-                    id="message"
+                    id="contact-message"
                     name="message"
                     value={formData.message}
                     onChange={handleInputChange}
                     required
                     rows={4}
-                    className="w-full px-4 py-2 border border-theme-border rounded-lg focus:ring-2 focus:ring-theme-accent focus:border-transparent outline-none transition-all resize-none"
-                    placeholder="Your message here..."
+                    className="w-full px-3.5 py-2.5 bg-[var(--paper-soft)] border border-[var(--line)] text-[var(--ink)] font-serif text-sm focus:border-[var(--sun)] focus:outline-none transition-colors resize-none"
+                    placeholder="Details about your timeline, role, or system specifications..."
                   />
                 </div>
 
-                {/* Status Messages */}
+
                 {submitStatus === "success" && (
-                  <div className="p-3 bg-green-100 text-green-700 rounded-lg text-sm">
-                    Message sent successfully!
+                  <div className="p-3.5 bg-emerald-950/10 border border-emerald-600/40 text-emerald-800 font-mono text-xs flex items-center gap-2">
+                    <span className="font-bold">✓</span>
+                    <span>Thank you! Your message has been sent successfully.</span>
                   </div>
                 )}
                 {submitStatus === "error" && (
-                  <div className="p-3 bg-red-100 text-red-700 rounded-lg text-sm">
-                    Failed to send message. Please try again.
+                  <div className="p-3.5 bg-rose-950/10 border border-rose-600/40 text-rose-800 font-mono text-xs flex items-center gap-2">
+                    <span className="font-bold">✕</span>
+                    <span>Something went wrong while sending your message.</span>
                   </div>
                 )}
 
-                {/* Submit Button */}
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full px-6 py-3 bg-theme-accent text-white rounded-lg font-medium hover:bg-[#C25835] transition-all hover:shadow-sm disabled:bg-[#EAE6DE] disabled:cursor-not-allowed hover:cursor-pointer"
-                >
-                  {isSubmitting ? "Sending..." : "Send Message"}
-                </button>
+
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="ticket-pill w-full justify-center disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    <span>{isSubmitting ? "TRANSMITTING..." : "DISPATCH TRANSMISSION"}</span>
+                    <span className="ticket-pill-icon">→</span>
+                  </button>
+                </div>
               </form>
             </motion.div>
           </motion.div>

@@ -1,66 +1,341 @@
 @import "tailwindcss";
 
 :root {
-  /* Anthropic-inspired warm paper theme */
-  --background: #F3F0E6;
-  --foreground: #1D1C1A;
-  --muted: #6C6A65;
-  --accent: #D66C44;
-  --border: #E2DCD0;
+  /* Neo-Mirai Japanese Cyber-Humanist Color System */
+  --paper: #f3efe6;
+  --paper-soft: #ece6da;
+  --paper-deep: #ddd5c5;
+  --ink: #1c1a17;
+  --ink-soft: #44403c;
+  --ash: #78716c;
+  --line: #d5cebf;
+  --line-strong: rgba(28, 26, 23, 0.28);
+  --gold: #c68a1e;
+  --gold-bright: #e5a932;
+  --sun: #c9421a;
+  --sun-deep: #a73210;
+  --night: #12181b;
+  --night-soft: #1b2327;
+  --rice: #faf7f0;
+  --focus: #c9421a;
+
+  /* Easing curves */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-quint: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Typography tokens */
+  --font-display: "Chakra Petch", -apple-system, system-ui, sans-serif;
+  --font-serif: "Zen Old Mincho", "Hiragino Mincho ProN", serif;
+  --font-mono: "Azeret Mono", monospace;
+
+  /* Backwards-compatibility aliases */
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --muted: var(--ink-soft);
+  --accent: var(--sun);
+  --border: var(--line);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-theme-bg: var(--background);
-  --color-theme-text: var(--foreground);
-  --color-theme-muted: var(--muted);
-  --color-theme-accent: var(--accent);
-  --color-theme-border: var(--border);
-  
-  --font-sans: var(--font-inter);
-  --font-serif: var(--font-lora);
+  --color-paper: var(--paper);
+  --color-paper-soft: var(--paper-soft);
+  --color-paper-deep: var(--paper-deep);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ash: var(--ash);
+  --color-line: var(--line);
+  --color-gold: var(--gold);
+  --color-gold-bright: var(--gold-bright);
+  --color-sun: var(--sun);
+  --color-sun-deep: var(--sun-deep);
+  --color-night: var(--night);
+  --color-night-soft: var(--night-soft);
+  --color-rice: var(--rice);
+
+  --color-theme-bg: var(--paper);
+  --color-theme-text: var(--ink);
+  --color-theme-muted: var(--ink-soft);
+  --color-theme-accent: var(--sun);
+  --color-theme-border: var(--line);
+
+  --font-display: var(--font-display);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--paper);
+  color: var(--ink);
+  overflow-x: clip;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(
+      circle at 66% 7%,
+      rgba(229, 169, 50, 0.18),
+      transparent 22rem
+    ),
+    linear-gradient(90deg, rgba(28, 26, 23, 0.035) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(28, 26, 23, 0.028) 1px, transparent 1px);
+  background-size:
+    auto,
+    112px 112px,
+    112px 112px;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: clip;
 }
 
-/* Typography elements for an elegant, editor-like feel */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-serif), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  color: var(--foreground);
+/* Headings adopt the cybernetic Chakra Petch font */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
 }
 
-/* Smooth Scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Custom Scrollbar */
+/* Custom Scrollbar styled for Neo-Mirai */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--background);
+  background: var(--paper);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #D4CDBC;
-  border-radius: 4px;
+  background: var(--line);
+  border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #AFA898;
+  background: var(--gold);
+}
+
+/* Focus states */
+:focus-visible {
+  outline: 2px solid var(--sun);
+  outline-offset: 3px;
 }
 
 /* Selection Color */
 ::selection {
-  background-color: var(--accent);
-  color: #fff;
+  background-color: var(--gold);
+  color: var(--rice);
+}
+
+/* Neo-Mirai Brand Mark Circular Emblem */
+.brand-mark {
+  position: relative;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid rgba(28, 26, 23, 0.4);
+  background:
+    linear-gradient(
+      90deg,
+      transparent 49%,
+      var(--ink) 49% 51%,
+      transparent 51%
+    ),
+    linear-gradient(0deg, transparent 49%, var(--ink) 49% 51%, transparent 51%),
+    radial-gradient(circle at 72% 25%, var(--rice) 0 19%, transparent 20%),
+    linear-gradient(
+      135deg,
+      var(--gold) 0 38%,
+      var(--sun) 38% 58%,
+      var(--night-soft) 58%
+    );
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.brand-mark span {
+  position: absolute;
+  inset: 58% 0 0;
+  background: rgba(221, 213, 197, 0.65);
+}
+
+/* Ticket Pill Action Button */
+.ticket-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.58rem;
+  min-height: 40px;
+  padding: 0.55rem 0.65rem 0.55rem 0.95rem;
+  color: var(--rice);
+  background: var(--gold);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  transition:
+    background 180ms var(--ease),
+    transform 240ms var(--ease),
+    box-shadow 240ms var(--ease);
+}
+
+.ticket-pill:hover,
+.ticket-pill:focus-visible {
+  background: var(--sun-deep);
+  box-shadow: 0 14px 44px rgba(167, 50, 16, 0.32);
+  transform: translateY(-2px);
+}
+
+.ticket-pill-icon {
+  width: 1.35rem;
+  height: 1.35rem;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-serif);
+  font-size: 0.85em;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* Secondary Ticket Pill / Ghost Button */
+.ticket-pill-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.58rem;
+  min-height: 40px;
+  padding: 0.55rem 0.65rem 0.55rem 0.95rem;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  transition: all 180ms var(--ease);
+}
+
+.ticket-pill-secondary:hover {
+  background: var(--ink);
+  color: var(--rice);
+  transform: translateY(-2px);
+}
+
+/* Neo-Mirai Text Action Arrow */
+.text-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: fit-content;
+  min-height: 40px;
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition:
+    color 180ms var(--ease),
+    transform 240ms var(--ease);
+}
+
+.text-action:hover,
+.text-action:focus-visible {
+  color: var(--sun-deep);
+  transform: translateX(0.25rem);
+}
+
+.text-action-icon {
+  width: 1.4rem;
+  height: 1.4rem;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-serif);
+  font-size: 0.82em;
+  line-height: 1;
+}
+
+/* Vertical Japanese poetry styling */
+.vertical-poem-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  line-height: 1.25;
+  letter-spacing: 0.15em;
+}
+
+/* Red Cinnabar Seal (Hankō) */
+.hanko-seal {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 4px;
+  border: 1.5px solid var(--sun);
+  color: var(--sun);
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 0.75rem;
+  line-height: 1;
+  background-color: rgba(201, 66, 26, 0.04);
+  box-shadow: inset 0 0 0 1px rgba(201, 66, 26, 0.15);
+  letter-spacing: 0.05em;
+  transform: rotate(-1.5deg);
+}
+
+/* Architectural hairlines */
+.neo-border {
+  border-color: var(--line);
+}
+
+.neo-border-t {
+  border-top: 1px solid var(--line);
+}
+
+.neo-border-b {
+  border-bottom: 1px solid var(--line);
+}
+
+/* Keyframe animations */
+@keyframes ink-settle {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes line-draw {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
 }

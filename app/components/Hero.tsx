@@ -12,72 +12,131 @@ export default function Hero() {
     const element = document.getElementById(targetId);
 
     if (element) {
-      const offset = 80; // Height of the header
+      const offset = 74;
       const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      const offsetPosition = elementPosition + window.scrollY - offset;
 
       window.scrollTo({
         top: offsetPosition,
         behavior: "smooth",
       });
+      window.history.pushState(null, "", href);
+      element.setAttribute("tabindex", "-1");
+      element.focus({ preventScroll: true });
     }
   };
+
   return (
-    <section className="min-h-screen flex items-center justify-center px-6 py-20 bg-theme-bg">
-      <div className="max-w-7xl w-full grid md:grid-cols-1 gap-12 items-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="space-y-6 text-center flex flex-col items-center"
-        >
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-5xl md:text-6xl text-theme-text leading-tight tracking-tight font-serif"
-          >
-            Alvincent Sangco
-            <br />
-            <span className="text-theme-accent italic">
-              Full Stack Developer
+    <section className="relative min-h-[92vh] pt-18.5 flex items-center border-b border-(--line) overflow-hidden">
+      <div
+        className="absolute top-1/4 right-[10%] w-152 h-152 rounded-full pointer-events-none opacity-40 blur-3xl -z-10"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(229,169,50,0.3) 0%, rgba(201,66,26,0.15) 50%, transparent 70%)",
+        }}
+        aria-hidden="true"
+      />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 w-full py-12 md:py-20 relative">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          <div className="hidden xl:flex lg:col-span-1 flex-col items-center justify-center gap-4 text-(--ink-soft) font-serif">
+            <span className="vertical-poem-text text-sm tracking-widest text-(--ink) select-none">
+              未来を描き、共に創る。
             </span>
-          </motion.h1>
+            <i className="w-px h-28 bg-(--line) block my-1" />
+            <div className="hanko-seal" title="Hankō Seal">
+              <span>桑</span>
+              <span>弧</span>
+            </div>
+            <span className="font-mono text-[0.6rem] uppercase tracking-widest text-ash select-none mt-2">
+              SYS·{new Date().getFullYear()}
+            </span>
+          </div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xl text-theme-muted leading-relaxed max-w-2xl mx-auto"
-          >
-            Let&apos;s build your idea into reality. I specialize in creating
-            modern, scalable web applications that solve real-world problems.
-            From concept to deployment, I bring technical expertise and creative
-            problem-solving to every project, ensuring your vision comes to life
-            with clean code and exceptional user experiences.
-          </motion.p>
+          <div className="lg:col-span-8 xl:col-span-7 space-y-6">
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <h1 className="font-display font-light text-5xl sm:text-6xl md:text-7xl lg:text-[5.4rem] leading-[0.95] tracking-tight uppercase text-(--ink)">
+                <span className="block">ALVINCENT SANGCO</span>
+                <span className="block text-(--sun) font-normal">
+                  FULL-STACK
+                </span>
+                <span className="block text-(--ink)">DEVELOPER</span>
+              </h1>
+            </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex flex-wrap gap-4 pt-4 justify-center"
-          >
-            <a
-              href="#projects"
-              onClick={(e) => handleClick(e, "#projects")}
-              className="px-8 py-3 bg-theme-text text-theme-bg rounded-md font-medium hover:bg-theme-muted transition-colors"
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.6,
+                delay: 0.15,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              className="space-y-4"
             >
-              View Projects
-            </a>
-            <a
-              href="/Alvincent Sangco Resume.pdf"
-              className="px-8 py-3 bg-transparent text-theme-text border border-theme-border rounded-md font-medium hover:border-theme-muted hover:text-theme-muted transition-colors"
+              <p className="font-serif text-xl sm:text-2xl text-sun-deep">
+                WEB · MOBILE · API · 3D/AR · AI INTEGRATION
+              </p>
+              <p className="font-serif text-base sm:text-lg text-(--ink-soft) max-w-2xl leading-relaxed">
+                I specialize in creating modern, scalable web applications that
+                solve real-world problems. From concept to deployment, I bring
+                technical expertise and creative problem-solving to every
+                project, ensuring your vision comes to life with clean code and
+                exceptional user experiences.
+              </p>
+            </motion.div>
+
+
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.6,
+                delay: 0.25,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              className="grid sm:grid-cols-2 gap-3 pt-6 border-t border-(--line) font-mono text-[0.72rem] uppercase tracking-wider text-(--ink)"
             >
-              Download Resume
-            </a>
-          </motion.div>
-        </motion.div>
+
+            </motion.div>
+
+
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.6,
+                delay: 0.35,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              className="flex flex-wrap items-center gap-4 pt-4"
+            >
+              <a
+                href="#projects"
+                onClick={(e) => handleClick(e, "#projects")}
+                className="ticket-pill"
+              >
+                <span>VIEW SELECTED PROJECTS</span>
+                <span className="ticket-pill-icon" aria-hidden="true">
+                  →
+                </span>
+              </a>
+              <a
+                href="/Alvincent Sangco Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ticket-pill-secondary"
+              >
+                <span>DOWNLOAD RESUME (PDF)</span>
+                <span className="font-serif text-sm">↗</span>
+              </a>
+            </motion.div>
+          </div>
+        </div>
       </div>
     </section>
   );
