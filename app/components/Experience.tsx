@@ -15,6 +15,7 @@ export default function Experience() {
       kanjiNumber: "〇一",
       role: "Software Developer",
       company: "FSUU BIRC",
+      link: "https://fsuubirc.com.ph",
       companyLogo: "/fsuu-birc-logo.png",
       achievements: [
         "Develop and maintain web and mobile applications incorporating augmented reality (AR) capabilities.",
@@ -27,6 +28,7 @@ export default function Experience() {
       kanjiNumber: "〇二",
       role: "Backend Developer (Full Stack – Backend Focused)",
       company: "HR-Hatch Tech",
+      link: "https://hr-hatch.com",
       companyLogo: "/hr-hatch-logo.jpeg",
       achievements: [
         "Architected an automated reference check pipeline processing 100+ candidates weekly by integrating Gemini/Claude APIs to automate candidate assessment reports.",
@@ -101,9 +103,9 @@ export default function Experience() {
                     />
                   </div>
                   <div>
-                    <h3 className="font-display text-xl text-[var(--rice)] font-normal tracking-wide">
+                    <a href={item.link} target="_blank" className="font-display text-xl text-[var(--rice)] font-normal tracking-wide">
                       {item.company}
-                    </h3>
+                    </a>
                   </div>
                 </div>
               </div>
