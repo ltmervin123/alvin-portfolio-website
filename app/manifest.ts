@@ -1,15 +1,15 @@
 import { MetadataRoute } from "next";
+import { siteConfig } from "@/config/site";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Alvincent Sangco - Full Stack Developer Portfolio",
-    short_name: "A. Sangco Portfolio",
-    description:
-      "Full-Stack Developer with 2 years of experience specializing in Web Development, AI-driven automation, RAG pipelines, media processing workflows, and scalable RESTful APIs. Proven track record of transforming complex requirements into production-ready systems, with a focus on optimizing latency and enhancing evaluation accuracy through LLM integration. ",
+    name: `${siteConfig.name} - ${siteConfig.role} Portfolio`,
+    short_name: siteConfig.shortName,
+    description: siteConfig.description,
     start_url: "/",
     display: "standalone",
-    background_color: "#ffffff",
-    theme_color: "#10b981",
+    background_color: siteConfig.backgroundColor,
+    theme_color: siteConfig.themeColor,
     orientation: "portrait-primary",
     categories: ["business", "portfolio", "technology"],
     lang: "en-US",
@@ -30,3 +30,4 @@ export default function manifest(): MetadataRoute.Manifest {
     ],
   };
 }
+

@@ -1,12 +1,14 @@
 import { MetadataRoute } from "next";
+import { siteConfig } from "@/config/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: "https://alvin-portfolio-website.vercel.app/",
+      url: `${siteConfig.url}/`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 1,
     },
   ];
 }
+
