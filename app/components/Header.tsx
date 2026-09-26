@@ -96,13 +96,13 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-        ? "bg-[var(--paper)]/95 backdrop-blur-md border-b border-[var(--line)] shadow-sm"
-        : "bg-gradient-to-b from-[var(--paper)]/95 via-[var(--paper)]/75 to-transparent border-b border-transparent"
-        }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-[var(--paper)]/95 backdrop-blur-md border-b border-[var(--line)] shadow-sm"
+          : "bg-gradient-to-b from-[var(--paper)]/95 via-[var(--paper)]/75 to-transparent border-b border-transparent"
+      }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 h-[74px] flex items-center justify-between gap-4">
-
         <a
           href="#hero"
           onClick={(e) => handleClick(e, "#hero")}
@@ -118,14 +118,11 @@ export default function Header() {
               className="h-full w-full object-cover"
             />
           </div>
-          <div className="font-mono text-xs font-semibold leading-tight tracking-wider uppercase text-[var(--ink)] flex flex-col">
-            <span>ALVINCENT</span>
-            <span className="text-[var(--ash)]">
-              SANGCO · {new Date().getFullYear()}
-            </span>
+          <div className="hidden lg:flex font-mono text-xs font-semibold leading-tight tracking-wider uppercase text-[var(--ink)] flex-col">
+            <span>ALVINCENT SANGCO</span>
+            <span className="text-[var(--ash)]">Full-Stack Developer</span>
           </div>
         </a>
-
 
         <nav
           className="hidden md:flex items-center gap-7 lg:gap-9 font-mono text-[0.72rem] tracking-widest uppercase text-[var(--ink-soft)]"
@@ -138,24 +135,25 @@ export default function Header() {
                 key={link.href}
                 href={link.href}
                 onClick={(e) => handleClick(e, link.href)}
-                className={`relative min-h-[44px] px-2 py-2 transition-colors duration-200 flex flex-col justify-center items-center group ${isActive
-                  ? "text-[var(--ink)] font-semibold"
-                  : "hover:text-[var(--ink)]"
-                  }`}
+                className={`relative min-h-[44px] px-2 py-2 transition-colors duration-200 flex flex-col justify-center items-center group ${
+                  isActive
+                    ? "text-[var(--ink)] font-semibold"
+                    : "hover:text-[var(--ink)]"
+                }`}
               >
                 <span>{link.name}</span>
 
                 <span
-                  className={`absolute bottom-1 w-1.5 h-1.5 rounded-full bg-[var(--sun)] transition-all duration-200 ${isActive
-                    ? "opacity-100 scale-100"
-                    : "opacity-0 scale-50 group-hover:opacity-60 group-hover:scale-75"
-                    }`}
+                  className={`absolute bottom-1 w-1.5 h-1.5 rounded-full bg-[var(--sun)] transition-all duration-200 ${
+                    isActive
+                      ? "opacity-100 scale-100"
+                      : "opacity-0 scale-50 group-hover:opacity-60 group-hover:scale-75"
+                  }`}
                 />
               </a>
             );
           })}
         </nav>
-
 
         <div className="hidden md:flex items-center gap-3">
           <a
