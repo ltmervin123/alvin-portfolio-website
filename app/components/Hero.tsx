@@ -1,8 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 export default function Hero() {
+  const shouldReduceMotion = useReducedMotion();
+
   const handleClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
     href: string,
@@ -39,7 +41,7 @@ export default function Hero() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 w-full py-12 md:py-20 relative">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          <div className="hidden xl:flex lg:col-span-1 flex-col items-center justify-center gap-4 text-(--ink-soft) font-serif">
+          <div className="hidden lg:flex lg:col-span-2 xl:col-span-1 flex-col items-center justify-center gap-4 text-(--ink-soft) font-serif">
             <span className="vertical-poem-text text-sm tracking-widest text-(--ink) select-none">
               未来を描き、共に創る。
             </span>
@@ -53,13 +55,13 @@ export default function Hero() {
             </span>
           </div>
 
-          <div className="lg:col-span-8 xl:col-span-7 space-y-6">
+          <div className="lg:col-span-10 xl:col-span-8 space-y-6">
             <motion.div
-              initial={{ opacity: 0, y: 18 }}
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             >
-              <h1 className="font-display font-light text-5xl sm:text-6xl md:text-7xl lg:text-[5.4rem] leading-[0.95] tracking-tight uppercase text-(--ink)">
+              <h1 className="font-display font-light text-4xl sm:text-5xl md:text-6xl lg:text-[5.2rem] leading-[0.96] tracking-tight uppercase text-(--ink) break-words">
                 <span className="block">ALVINCENT SANGCO</span>
                 <span className="block text-(--sun) font-normal">
                   FULL-STACK
@@ -69,7 +71,7 @@ export default function Hero() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 duration: 0.6,
@@ -78,7 +80,7 @@ export default function Hero() {
               }}
               className="space-y-4"
             >
-              <p className="font-serif text-xl sm:text-2xl text-sun-deep">
+              <p className="font-serif text-lg sm:text-xl md:text-2xl text-sun-deep">
                 WEB · MOBILE · API · 3D/AR · AI INTEGRATION
               </p>
               <p className="font-serif text-base sm:text-lg text-(--ink-soft) max-w-2xl leading-relaxed">
@@ -90,27 +92,12 @@ export default function Hero() {
               </p>
             </motion.div>
 
-
             <motion.div
-              initial={{ opacity: 0, y: 14 }}
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 duration: 0.6,
                 delay: 0.25,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              className="grid sm:grid-cols-2 gap-3 pt-6 border-t border-(--line) font-mono text-[0.72rem] uppercase tracking-wider text-(--ink)"
-            >
-
-            </motion.div>
-
-
-            <motion.div
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.6,
-                delay: 0.35,
                 ease: [0.16, 1, 0.3, 1],
               }}
               className="flex flex-wrap items-center gap-4 pt-4"
@@ -118,7 +105,7 @@ export default function Hero() {
               <a
                 href="#projects"
                 onClick={(e) => handleClick(e, "#projects")}
-                className="ticket-pill"
+                className="ticket-pill min-h-[44px]"
               >
                 <span>VIEW SELECTED PROJECTS</span>
                 <span className="ticket-pill-icon" aria-hidden="true">
@@ -129,7 +116,7 @@ export default function Hero() {
                 href="/Alvincent Sangco Resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="ticket-pill-secondary"
+                className="ticket-pill-secondary min-h-[44px]"
               >
                 <span>DOWNLOAD RESUME (PDF)</span>
                 <span className="font-serif text-sm">↗</span>

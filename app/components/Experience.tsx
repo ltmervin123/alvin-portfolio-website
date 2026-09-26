@@ -1,13 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
 
 export default function Experience() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const shouldReduceMotion = useReducedMotion();
 
   const experiences = [
     {
@@ -70,14 +70,14 @@ export default function Experience() {
           {experiences.map((item, idx) => (
             <motion.div
               key={`${item.company}-${item.period}`}
-              initial={{ opacity: 0, y: 24 }}
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{
                 duration: 0.6,
                 delay: idx * 0.2,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start border border-white/10 bg-white/[0.02] p-6 sm:p-8 relative hover:border-[var(--gold)]/40 transition-colors"
+              className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start border border-white/10 bg-white/[0.02] p-5 sm:p-8 relative hover:border-[var(--gold)]/40 transition-colors"
             >
 
               <div className="lg:col-span-4 space-y-3">
@@ -101,7 +101,7 @@ export default function Experience() {
                     />
                   </div>
                   <div>
-                    <h3 className="font-display text-xl text-[#FAF7F0] font-normal tracking-wide">
+                    <h3 className="font-display text-xl text-[var(--rice)] font-normal tracking-wide">
                       {item.company}
                     </h3>
                   </div>
@@ -110,7 +110,7 @@ export default function Experience() {
 
 
               <div className="lg:col-span-8 space-y-4">
-                <h4 className="font-serif text-xl sm:text-2xl text-[#FAF7F0] font-medium">
+                <h4 className="font-serif text-xl sm:text-2xl text-[var(--rice)] font-medium">
                   {item.role}
                 </h4>
 

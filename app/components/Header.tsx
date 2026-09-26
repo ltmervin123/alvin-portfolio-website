@@ -38,8 +38,27 @@ export default function Header() {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   const navLinks = [
@@ -93,7 +112,7 @@ export default function Header() {
           <div className="brand-mark group-hover:scale-105 transition-transform duration-300">
             <Image
               src="/profile.jpg"
-              alt=""
+              alt="Alvincent Sangco"
               width={44}
               height={44}
               className="h-full w-full object-cover"
@@ -119,7 +138,7 @@ export default function Header() {
                 key={link.href}
                 href={link.href}
                 onClick={(e) => handleClick(e, link.href)}
-                className={`relative py-2 transition-colors duration-200 flex flex-col items-center group ${isActive
+                className={`relative min-h-[44px] px-2 py-2 transition-colors duration-200 flex flex-col justify-center items-center group ${isActive
                   ? "text-[var(--ink)] font-semibold"
                   : "hover:text-[var(--ink)]"
                   }`}
@@ -127,7 +146,7 @@ export default function Header() {
                 <span>{link.name}</span>
 
                 <span
-                  className={`absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-[var(--sun)] transition-all duration-200 ${isActive
+                  className={`absolute bottom-1 w-1.5 h-1.5 rounded-full bg-[var(--sun)] transition-all duration-200 ${isActive
                     ? "opacity-100 scale-100"
                     : "opacity-0 scale-50 group-hover:opacity-60 group-hover:scale-75"
                     }`}
@@ -154,7 +173,7 @@ export default function Header() {
         <button
           type="button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden flex items-center gap-2 px-3 py-1.5 border border-[var(--line)] rounded font-mono text-xs tracking-wider uppercase text-[var(--ink)] hover:bg-[var(--paper-soft)] transition-colors"
+          className="md:hidden flex items-center justify-center gap-2 min-h-[44px] min-w-[44px] px-3.5 py-2 border border-[var(--line)] rounded font-mono text-xs tracking-wider uppercase text-[var(--ink)] hover:bg-[var(--paper-soft)] transition-colors"
           aria-expanded={mobileMenuOpen}
           aria-label="Toggle Navigation"
         >
@@ -172,13 +191,13 @@ export default function Header() {
           exit={{ opacity: 0, y: -10 }}
           className="md:hidden bg-[var(--paper)] border-b border-[var(--line)] px-6 py-6 shadow-xl"
         >
-          <div className="flex flex-col gap-4 font-mono text-xs uppercase tracking-widest text-[var(--ink)]">
+          <div className="flex flex-col gap-2 font-mono text-xs uppercase tracking-widest text-[var(--ink)]">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={(e) => handleClick(e, link.href)}
-                className="flex items-center justify-between py-2 border-b border-[var(--line)]/50 hover:text-[var(--sun)] transition-colors"
+                className="flex items-center justify-between min-h-[44px] py-2.5 border-b border-[var(--line)]/50 hover:text-[var(--sun)] transition-colors"
               >
                 <span>{link.name}</span>
                 <span className="font-serif text-[var(--ash)] text-xs">
@@ -186,7 +205,7 @@ export default function Header() {
                 </span>
               </a>
             ))}
-            <div className="pt-2">
+            <div className="pt-3">
               <a
                 href="#contact"
                 onClick={(e) => handleClick(e, "#contact")}

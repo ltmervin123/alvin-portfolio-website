@@ -1,13 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
 
 export default function About() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const shouldReduceMotion = useReducedMotion();
 
   const coreFocusAreas = [
     {
@@ -49,10 +49,10 @@ export default function About() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
 
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, x: -20 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-4 bg-[var(--paper)] border border-[var(--line)] p-6 shadow-sm relative group"
+            className="lg:col-span-4 bg-[var(--paper)] border border-[var(--line)] p-5 sm:p-6 shadow-sm relative group"
           >
 
             <div className="flex justify-between items-center pb-4 mb-6 border-b border-[var(--line)] font-mono text-[0.65rem] text-[var(--ash)] uppercase tracking-wider">
@@ -85,17 +85,17 @@ export default function About() {
 
 
             <div className="space-y-3 font-mono text-xs border-t border-[var(--line)] pt-4 text-[var(--ink)]">
-              <div className="flex justify-between">
-                <span className="text-[var(--ash)]">ROLE:</span>
-                <span className="font-semibold text-right">FULL-STACK, AI &amp; MOBILE DEVELOPER</span>
+              <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-2">
+                <span className="text-[var(--ash)] shrink-0">ROLE:</span>
+                <span className="font-semibold sm:text-right">FULL-STACK, AI &amp; MOBILE DEVELOPER</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-[var(--ash)]">EXPERIENCE:</span>
-                <span className="font-semibold text-right">2+ YEARS PROFESSIONAL</span>
+              <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-2">
+                <span className="text-[var(--ash)] shrink-0">EXPERIENCE:</span>
+                <span className="font-semibold sm:text-right">2+ YEARS PROFESSIONAL</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-[var(--ash)]">STATUS:</span>
-                <span className="text-[var(--gold)] font-semibold text-right">
+              <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-2">
+                <span className="text-[var(--ash)] shrink-0">STATUS:</span>
+                <span className="text-[var(--gold)] font-semibold sm:text-right">
                   OPEN TO OPPORTUNITIES
                 </span>
               </div>
@@ -104,7 +104,7 @@ export default function About() {
 
 
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, x: 20 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-8 space-y-8"
@@ -120,7 +120,7 @@ export default function About() {
             </div>
 
 
-            <div className="grid sm:grid-cols-3 gap-4 pt-6 border-t border-[var(--line)]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-6 border-t border-[var(--line)]">
               {coreFocusAreas.map((item, idx) => (
                 <div
                   key={idx}
@@ -140,11 +140,11 @@ export default function About() {
               ))}
             </div>
 
-            <div className="p-4 bg-[var(--paper-deep)] border-l-2 border-[var(--sun)] font-serif text-sm text-[var(--ink)] italic flex items-center justify-between">
+            <div className="p-4 bg-[var(--paper-deep)] border-l-2 border-[var(--sun)] font-serif text-sm text-[var(--ink)] italic flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <span>
                 &ldquo;Pragmatic architecture, rapid velocity, and uncompromising craft.&rdquo;
               </span>
-              <span className="font-mono text-[0.65rem] not-italic text-[var(--ash)] uppercase ml-4 shrink-0">
+              <span className="font-mono text-[0.65rem] not-italic text-[var(--ash)] uppercase shrink-0">
                 — ENGINEERING CREED
               </span>
             </div>

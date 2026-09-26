@@ -1,8 +1,7 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { motion, AnimatePresence, useInView, useReducedMotion } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
 import { Mail, Linkedin, Github, LucideIcon } from "lucide-react";
 
 interface ContactItem {
@@ -48,6 +47,8 @@ const CONTACT_ITEMS: ContactItem[] = [
 export default function Contact() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const shouldReduceMotion = useReducedMotion();
+  const nameInputRef = useRef<HTMLInputElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -58,6 +59,23 @@ export default function Contact() {
   const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(
     null,
   );
+
+  useEffect(() => {
+    if (!isModalOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsModalOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    const timer = setTimeout(() => {
+      nameInputRef.current?.focus();
+    }, 100);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      clearTimeout(timer);
+    };
+  }, [isModalOpen]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -107,8 +125,6 @@ export default function Contact() {
     });
   };
 
-
-
   return (
     <section
       ref={ref}
@@ -127,21 +143,21 @@ export default function Contact() {
           </div>
         </div>
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="bg-[var(--paper-deep)] border border-[var(--line)] p-8 flex flex-col md:flex-row items-center justify-between gap-6"
+          className="bg-[var(--paper-deep)] border border-[var(--line)] p-5 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
         >
-          <div className="flex items-center gap-6">
-            <div className="hanko-seal text-base px-3 py-2 bg-[var(--paper)]">
+          <div className="flex items-center gap-4 sm:gap-6">
+            <div className="hanko-seal text-base px-3 py-2 bg-[var(--paper)] shrink-0">
               <span>通</span>
               <span>信</span>
             </div>
             <div>
-              <span className="font-mono text-xs uppercase tracking-widest text-[var(--sun-deep)] block">
+              <span className="font-mono text-xs uppercase tracking-widest text-[var(--sun-deep)] block font-semibold">
                 DIRECT INQUIRY
               </span>
-              <h3 className="font-display text-2xl text-[var(--ink)] uppercase tracking-wide mt-1">
+              <h3 className="font-display text-xl sm:text-2xl text-[var(--ink)] uppercase tracking-wide mt-1">
                 SEND A DIRECT DISPATCH
               </h3>
             </div>
@@ -150,7 +166,7 @@ export default function Contact() {
           <button
             type="button"
             onClick={() => setIsModalOpen(true)}
-            className="ticket-pill cursor-pointer"
+            className="ticket-pill min-h-[44px] cursor-pointer self-start md:self-auto"
           >
             <span>LEAVE A MESSAGE</span>
             <span className="ticket-pill-icon" aria-hidden="true">
@@ -160,7 +176,7 @@ export default function Contact() {
         </motion.div>
 
 
-        <div className="mt-12 pt-8  grid grid-cols-1 sm:grid-cols-3 gap-6 font-mono text-xs text-[var(--ink)]">
+        <div className="mt-12 pt-8 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 font-mono text-xs text-[var(--ink)]">
           {CONTACT_ITEMS.map((item) => {
             const Icon = item.icon;
             return (
@@ -201,6 +217,9 @@ export default function Contact() {
             onClick={() => setIsModalOpen(false)}
           >
             <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="contact-modal-title"
               initial={{ scale: 0.94, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.94, opacity: 0 }}
@@ -211,14 +230,14 @@ export default function Contact() {
 
               <div className="flex justify-between items-center pb-4 mb-6 border-b border-[var(--line)]">
                 <div>
-                  <h3 className="font-display text-2xl text-[var(--ink)] uppercase">
+                  <h3 id="contact-modal-title" className="font-display text-2xl text-[var(--ink)] uppercase">
                     SEND A MESSAGE
                   </h3>
                 </div>
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="w-8 h-8 rounded-full border border-[var(--line)] flex items-center justify-center font-mono text-sm text-[var(--ink)] hover:bg-[var(--sun)] hover:text-[var(--rice)] transition-colors cursor-pointer"
+                  className="min-w-[44px] min-h-[44px] rounded-full border border-[var(--line)] flex items-center justify-center font-mono text-sm text-[var(--ink)] hover:bg-[var(--sun)] hover:text-[var(--rice)] transition-colors cursor-pointer"
                   aria-label="Close modal"
                 >
                   ✕
@@ -235,13 +254,14 @@ export default function Contact() {
                     YOUR NAME / IDENTIFIER
                   </label>
                   <input
+                    ref={nameInputRef}
                     type="text"
                     id="contact-name"
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3.5 py-2.5 bg-[var(--paper-soft)] border border-[var(--line)] text-[var(--ink)] font-serif text-sm focus:border-[var(--sun)] focus:outline-none transition-colors"
+                    className="w-full px-3.5 py-2.5 bg-[var(--paper-soft)] border border-[var(--line)] text-[var(--ink)] font-serif text-base md:text-sm focus:border-[var(--sun)] focus:outline-none transition-colors"
                     placeholder="Jane Doe / Acme Corp"
                   />
                 </div>
@@ -260,7 +280,7 @@ export default function Contact() {
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3.5 py-2.5 bg-[var(--paper-soft)] border border-[var(--line)] text-[var(--ink)] font-serif text-sm focus:border-[var(--sun)] focus:outline-none transition-colors"
+                    className="w-full px-3.5 py-2.5 bg-[var(--paper-soft)] border border-[var(--line)] text-[var(--ink)] font-serif text-base md:text-sm focus:border-[var(--sun)] focus:outline-none transition-colors"
                     placeholder="jane@company.com"
                   />
                 </div>
@@ -279,7 +299,7 @@ export default function Contact() {
                     onChange={handleInputChange}
                     required
                     rows={4}
-                    className="w-full px-3.5 py-2.5 bg-[var(--paper-soft)] border border-[var(--line)] text-[var(--ink)] font-serif text-sm focus:border-[var(--sun)] focus:outline-none transition-colors resize-none"
+                    className="w-full px-3.5 py-2.5 bg-[var(--paper-soft)] border border-[var(--line)] text-[var(--ink)] font-serif text-base md:text-sm focus:border-[var(--sun)] focus:outline-none transition-colors resize-none"
                     placeholder="Details about your timeline, role, or system specifications..."
                   />
                 </div>
@@ -303,7 +323,7 @@ export default function Contact() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="ticket-pill w-full justify-center disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    className="ticket-pill min-h-[44px] w-full justify-center disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                   >
                     <span>{isSubmitting ? "TRANSMITTING..." : "DISPATCH TRANSMISSION"}</span>
                     <span className="ticket-pill-icon">→</span>

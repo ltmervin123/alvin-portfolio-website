@@ -1,9 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import Image from "next/image";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 
 const shimmerBase64 =
@@ -22,25 +21,44 @@ function ImageGallery({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
-  const nextImage = () => {
-    if (!isTransitioning) {
+  const nextImage = useCallback(() => {
+    if (!isTransitioning && images.length > 1) {
       setIsTransitioning(true);
       setTimeout(() => {
         setCurrentIndex((prev) => (prev + 1) % images.length);
         setIsTransitioning(false);
       }, 250);
     }
-  };
+  }, [isTransitioning, images.length]);
 
-  const prevImage = () => {
-    if (!isTransitioning) {
+  const prevImage = useCallback(() => {
+    if (!isTransitioning && images.length > 1) {
       setIsTransitioning(true);
       setTimeout(() => {
         setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
         setIsTransitioning(false);
       }, 250);
     }
+  }, [isTransitioning, images.length]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX - touchEndX;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) {
+        nextImage();
+      } else {
+        prevImage();
+      }
+    }
+    setTouchStartX(null);
   };
 
   useEffect(() => {
@@ -57,40 +75,52 @@ function ImageGallery({
     return () => clearInterval(interval);
   }, [images.length, isHovered, isModalOpen]);
 
-
   useEffect(() => {
     if (isModalOpen) {
       document.body.style.overflow = "hidden";
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          setIsModalOpen(false);
+        } else if (e.key === "ArrowLeft") {
+          prevImage();
+        } else if (e.key === "ArrowRight") {
+          nextImage();
+        }
+      };
+      window.addEventListener("keydown", handleKeyDown);
+      return () => {
+        window.removeEventListener("keydown", handleKeyDown);
+        document.body.style.overflow = "unset";
+      };
     } else {
       document.body.style.overflow = "unset";
     }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isModalOpen]);
+  }, [isModalOpen, prevImage, nextImage]);
 
   if (images.length === 0) return null;
 
   return (
     <>
       <div
-        className="relative w-full h-72 md:h-80 bg-[var(--paper-deep)] border border-[var(--line)] overflow-hidden group select-none cursor-pointer"
+        className="relative w-full aspect-[16/10] min-h-[240px] md:min-h-[290px] bg-[var(--paper-deep)] border border-[var(--line)] overflow-hidden group select-none cursor-pointer"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={() => setIsModalOpen(true)}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
       >
         <Image
           src={images[currentIndex]}
           alt={`${projectTitle} screenshot ${currentIndex + 1}`}
           fill
-          className={`object-cover transition-all duration-500 group-hover:scale-105 ${isTransitioning ? "opacity-0 scale-95" : "opacity-100 scale-100"
-            }`}
+          className={`object-cover transition-all duration-500 group-hover:scale-105 ${
+            isTransitioning ? "opacity-0 scale-95" : "opacity-100 scale-100"
+          }`}
           sizes="(max-width: 768px) 100vw, 40vw"
           priority={priority}
           placeholder="blur"
           blurDataURL={shimmerBase64}
         />
-
 
         <div className="absolute top-3 right-3 bg-[var(--ink)] text-[var(--rice)] px-2.5 py-1 font-mono text-xs font-semibold uppercase tracking-wider border border-white/20 z-10 shadow-xs">
           {currentIndex + 1} / {images.length}
@@ -101,7 +131,6 @@ function ImageGallery({
           <span>EXPAND VIEW</span>
         </div>
 
-
         {images.length > 1 && (
           <>
             <button
@@ -110,7 +139,7 @@ function ImageGallery({
                 e.stopPropagation();
                 prevImage();
               }}
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-[var(--ink)]/80 text-[var(--rice)] w-9 h-9 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[var(--sun)] z-20"
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-[var(--ink)]/85 text-[var(--rice)] w-10 h-10 rounded-full flex items-center justify-center opacity-90 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-[var(--sun)] z-20 cursor-pointer shadow-md"
               aria-label="Previous image"
             >
               ←
@@ -121,7 +150,7 @@ function ImageGallery({
                 e.stopPropagation();
                 nextImage();
               }}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-[var(--ink)]/80 text-[var(--rice)] w-9 h-9 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[var(--sun)] z-20"
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-[var(--ink)]/85 text-[var(--rice)] w-10 h-10 rounded-full flex items-center justify-center opacity-90 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-[var(--sun)] z-20 cursor-pointer shadow-md"
               aria-label="Next image"
             >
               →
@@ -129,9 +158,8 @@ function ImageGallery({
           </>
         )}
 
-
         {images.length > 1 && (
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-20 bg-black/40 px-3 py-1 rounded-full backdrop-blur-xs">
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1 z-20 bg-black/60 px-2 py-0.5 rounded-full backdrop-blur-xs">
             {images.slice(0, 10).map((_, idx) => (
               <button
                 key={idx}
@@ -140,15 +168,20 @@ function ImageGallery({
                   e.stopPropagation();
                   setCurrentIndex(idx);
                 }}
-                className={`transition-all duration-300 rounded-full ${idx === currentIndex
-                  ? "bg-[var(--gold-bright)] w-5 h-1.5"
-                  : "bg-white/50 hover:bg-white/80 w-1.5 h-1.5"
-                  }`}
+                className="p-1.5 flex items-center justify-center cursor-pointer"
                 aria-label={`Go to image ${idx + 1}`}
-              />
+              >
+                <span
+                  className={`block transition-all duration-300 rounded-full ${
+                    idx === currentIndex
+                      ? "bg-[var(--gold-bright)] w-5 h-1.5"
+                      : "bg-white/50 hover:bg-white/80 w-1.5 h-1.5"
+                  }`}
+                />
+              </button>
             ))}
             {images.length > 10 && (
-              <span className="text-[0.6rem] text-white/70 font-mono ml-1">
+              <span className="text-[0.6rem] text-white/70 font-mono pr-1">
                 +{images.length - 10}
               </span>
             )}
@@ -160,27 +193,35 @@ function ImageGallery({
         typeof window !== "undefined" &&
         createPortal(
           <div
-            className="fixed inset-0 z-[9999] bg-[var(--night)]/95 backdrop-blur-md flex items-center justify-center p-4"
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${projectTitle} screenshot viewer`}
+            className="fixed inset-0 z-[9999] bg-[var(--night)]/95 backdrop-blur-md flex flex-col justify-between p-3 sm:p-6"
             onClick={() => setIsModalOpen(false)}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
           >
-
-            <button
-              type="button"
-              className="absolute top-4 right-4 sm:top-6 sm:right-6 z-40 px-4 py-2 bg-white/10 hover:bg-[var(--sun)] text-[var(--rice)] border border-white/20 font-mono text-xs uppercase tracking-wider transition-colors flex items-center gap-2 cursor-pointer"
-              onClick={() => setIsModalOpen(false)}
-              aria-label="Close modal"
+            <div
+              className="w-full flex items-center justify-between gap-3 z-40"
+              onClick={(e) => e.stopPropagation()}
             >
-              <span>CLOSE</span>
-              <span>✕</span>
-            </button>
+              <div className="bg-white/10 text-[var(--rice)] px-3.5 py-2 border border-white/20 font-mono text-xs uppercase tracking-wider truncate max-w-[70vw]">
+                {projectTitle} {"//"} {currentIndex + 1} OF {images.length}
+              </div>
 
-
-            <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-40 bg-white/10 text-[var(--rice)] px-4 py-2 border border-white/20 font-mono text-xs uppercase tracking-wider">
-              {projectTitle} // {currentIndex + 1} OF {images.length}
+              <button
+                type="button"
+                className="min-h-[44px] min-w-[44px] px-4 py-2 bg-white/10 hover:bg-[var(--sun)] text-[var(--rice)] border border-white/20 font-mono text-xs uppercase tracking-wider transition-colors flex items-center gap-2 cursor-pointer shrink-0"
+                onClick={() => setIsModalOpen(false)}
+                aria-label="Close modal"
+              >
+                <span>CLOSE</span>
+                <span>✕</span>
+              </button>
             </div>
 
             <div
-              className="relative w-full h-[80vh] max-w-6xl flex items-center justify-center"
+              className="relative w-full flex-1 max-w-6xl mx-auto flex items-center justify-center my-2"
               onClick={(e) => e.stopPropagation()}
             >
               <Image
@@ -188,19 +229,18 @@ function ImageGallery({
                 src={images[currentIndex]}
                 alt={`${projectTitle} screenshot ${currentIndex + 1}`}
                 fill
-                className="object-contain p-2 sm:p-6 transition-opacity duration-300"
+                className="object-contain p-2 sm:p-4 transition-opacity duration-300"
                 sizes="100vw"
                 priority
                 quality={95}
               />
-
 
               {images.length > 1 && (
                 <>
                   <button
                     type="button"
                     onClick={prevImage}
-                    className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-40 bg-white/10 hover:bg-[var(--sun)] text-[var(--rice)] border border-white/20 w-12 h-12 rounded-full flex items-center justify-center font-mono text-xl transition-all"
+                    className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-40 bg-black/60 hover:bg-[var(--sun)] text-[var(--rice)] border border-white/20 w-12 h-12 rounded-full flex items-center justify-center font-mono text-xl transition-all cursor-pointer shadow-lg"
                     aria-label="Previous image"
                   >
                     ←
@@ -208,13 +248,38 @@ function ImageGallery({
                   <button
                     type="button"
                     onClick={nextImage}
-                    className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-40 bg-white/10 hover:bg-[var(--sun)] text-[var(--rice)] border border-white/20 w-12 h-12 rounded-full flex items-center justify-center font-mono text-xl transition-all"
+                    className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-40 bg-black/60 hover:bg-[var(--sun)] text-[var(--rice)] border border-white/20 w-12 h-12 rounded-full flex items-center justify-center font-mono text-xl transition-all cursor-pointer shadow-lg"
                     aria-label="Next image"
                   >
                     →
                   </button>
                 </>
               )}
+            </div>
+
+            <div
+              className="w-full flex items-center justify-center z-40 pb-1"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center gap-1 bg-black/60 px-3 py-1 rounded-full border border-white/10">
+                {images.map((_, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setCurrentIndex(idx)}
+                    className="p-1 flex items-center justify-center cursor-pointer"
+                    aria-label={`Jump to image ${idx + 1}`}
+                  >
+                    <span
+                      className={`block transition-all duration-300 rounded-full ${
+                        idx === currentIndex
+                          ? "bg-[var(--gold-bright)] w-5 h-1.5"
+                          : "bg-white/40 hover:bg-white/80 w-1.5 h-1.5"
+                      }`}
+                    />
+                  </button>
+                ))}
+              </div>
             </div>
           </div>,
           document.body,
@@ -226,6 +291,7 @@ function ImageGallery({
 export default function Projects() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const shouldReduceMotion = useReducedMotion();
 
   const projects = [
     {
@@ -348,29 +414,29 @@ export default function Projects() {
           {projects.map((project, pIdx) => (
             <motion.div
               key={project.code}
-              initial={{ opacity: 0, y: 30 }}
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{
                 duration: 0.6,
                 delay: pIdx * 0.15,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="bg-[var(--paper)] border border-[var(--line)] p-6 sm:p-8 lg:p-10 shadow-sm relative group hover:border-[var(--sun)]/50 transition-colors"
+              className="bg-[var(--paper)] border border-[var(--line)] p-5 sm:p-8 lg:p-10 shadow-sm relative group hover:border-[var(--sun)]/50 transition-colors"
             >
 
-              <div className="flex justify-between items-center pb-4 mb-6 border-b border-[var(--line)] font-mono text-xs uppercase tracking-wider">
-                <div className="flex items-center gap-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-6 border-b border-[var(--line)] font-mono text-xs uppercase tracking-wider">
+                <div className="flex items-center gap-2.5 flex-wrap">
                   <span className="font-bold text-[var(--sun)] text-sm">{project.code}</span>
-                  <span className="text-[var(--ash)]">//</span>
+                  <span className="text-[var(--ash)]" aria-hidden="true">{"//"}</span>
                   <span className="font-serif text-[var(--ink)] font-bold text-sm">
                     {project.kanji}
                   </span>
-                  <span className="text-[var(--ash)]">//</span>
+                  <span className="text-[var(--ash)]" aria-hidden="true">{"//"}</span>
                   <span className="text-[var(--ink)] font-mono text-xs font-semibold">
                     {project.title}
                   </span>
                 </div>
-                <div className="flex items-center gap-2 bg-[var(--paper-soft)] px-3 py-1 border border-[var(--line)]">
+                <div className="flex items-center gap-2 bg-[var(--paper-soft)] px-3 py-1 border border-[var(--line)] self-start sm:self-auto shrink-0">
                   <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
                   <span className="text-[var(--ink)] font-mono text-xs font-semibold tracking-wider">
                     LIVE PRODUCTION
@@ -433,7 +499,7 @@ export default function Projects() {
                       href={project.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="ticket-pill"
+                      className="ticket-pill min-h-[44px]"
                     >
                       <span>VIEW LIVE PROJECT</span>
                       <span className="ticket-pill-icon" aria-hidden="true">

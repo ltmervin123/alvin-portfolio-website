@@ -1,7 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { JSX, useRef } from "react";
 import {
   Server,
@@ -13,7 +12,6 @@ import {
   Layers,
   Smartphone,
   Cloud,
-  Terminal,
 } from "lucide-react";
 import {
   siReact,
@@ -53,7 +51,7 @@ import {
 } from "simple-icons";
 
 
-const SimpleIcon = ({ icon, className }: { icon: any; className?: string }) => (
+const SimpleIcon = ({ icon, className }: { icon: { path: string }; className?: string }) => (
   <svg
     role="img"
     viewBox="0 0 24 24"
@@ -120,6 +118,7 @@ const TechIcon = ({ name }: { name: string }) => {
 export default function Skills() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const shouldReduceMotion = useReducedMotion();
 
   const categories = [
     {
@@ -236,7 +235,7 @@ export default function Skills() {
           {categories.map((category, cIdx) => (
             <motion.div
               key={category.index}
-              initial={{ opacity: 0, y: 20 }}
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{
                 duration: 0.5,
@@ -246,14 +245,14 @@ export default function Skills() {
               className="bg-[var(--paper-soft)] border border-[var(--line)] p-6 space-y-4 hover:border-[var(--sun)]/60 transition-colors relative group"
             >
 
-              <div className="flex justify-between items-center pb-3 border-b border-[var(--line)]">
+              <div className="flex flex-wrap sm:flex-nowrap justify-between items-center gap-2 pb-3 border-b border-[var(--line)]">
                 <div className="flex items-center gap-2">
                   {category.icon}
                   <span className="font-mono text-xs font-semibold uppercase tracking-wider text-[var(--ink)]">
                     {category.title}
                   </span>
                 </div>
-                <div className="flex items-center gap-2 font-mono text-[0.65rem] text-[var(--ash)]">
+                <div className="flex items-center gap-2 font-mono text-[0.65rem] text-[var(--ash)] shrink-0">
                   <span>{category.index}</span>
                   <span className="font-serif text-[var(--sun)]">{category.kanji}</span>
                 </div>
