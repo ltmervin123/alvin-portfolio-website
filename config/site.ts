@@ -48,16 +48,16 @@ export const siteConfig = {
     twitter: "@alvincentsangco",
   },
   links: {
-    linkedin: "https://www.linkedin.com/in/alvincentsangco",
-    github: "https://github.com/alvincentsangco",
+    linkedin: "https://www.linkedin.com/in/alvincent-sangco-8a4085290/",
+    github: "https://github.com/ltmervin123",
   },
   verification: {
     google: "google98264a67849ca1cc",
   },
   category: "technology",
   locale: "en_US",
-  themeColor: "#10b981",
-  backgroundColor: "#ffffff",
+  themeColor: "#C68A1E",
+  backgroundColor: "#F3EFE6",
 };
 
 export function constructMetadata({
