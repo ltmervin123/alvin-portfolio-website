@@ -3,6 +3,7 @@
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
+import GithubContributions from "./GithubContributions";
 
 export default function About() {
   const ref = useRef(null);
@@ -13,7 +14,7 @@ export default function About() {
     {
       label: "FULL-STACK DEVELOPER",
       kanji: "全階層開発",
-      desc: "Architecting responsive, high-performance web applications with Next.js, React, Node.js, and TypeScript.",
+      desc: "Architecting responsive, high-performance web applications with Next.js, React, Vue.js, Node.js, and TypeScript.",
     },
     {
       label: "AI ENGINEER",
@@ -52,9 +53,8 @@ export default function About() {
             initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, x: -20 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-4 bg-[var(--paper)] border border-[var(--line)] p-5 sm:p-6 shadow-sm relative group"
+            className="lg:col-span-4 bg-[var(--paper)] border border-[var(--line)] p-5 sm:p-6 shadow-xs relative group"
           >
-
             <div className="flex justify-between items-center pb-4 mb-6 border-b border-[var(--line)] font-mono text-[0.65rem] text-[var(--ash)] uppercase tracking-wider">
               <span>DOSSIER // ALVINCENT SANGCO</span>
               <span className="text-[var(--sun)] font-bold">ACTIVE</span>
@@ -83,7 +83,6 @@ export default function About() {
               </div>
             </div>
 
-
             <div className="space-y-3 font-mono text-xs border-t border-[var(--line)] pt-4 text-[var(--ink)]">
               <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-2">
                 <span className="text-[var(--ash)] shrink-0">ROLE:</span>
@@ -109,7 +108,6 @@ export default function About() {
             transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-8 space-y-8"
           >
-
             <div className="space-y-4 font-serif text-base sm:text-lg text-[var(--ink-soft)] leading-relaxed">
               <p>
                 Full-stack software engineer experienced in building web and mobile applications, AI-powered systems, automation
@@ -118,7 +116,6 @@ export default function About() {
                 workflows to automate processes and improve system efficiency and accuracy.
               </p>
             </div>
-
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-6 border-t border-[var(--line)]">
               {coreFocusAreas.map((item, idx) => (
@@ -149,8 +146,13 @@ export default function About() {
               </span>
             </div>
           </motion.div>
-
         </div>
+
+
+        <GithubContributions
+          isInView={isInView}
+          shouldReduceMotion={shouldReduceMotion}
+        />
       </div>
     </section>
   );
